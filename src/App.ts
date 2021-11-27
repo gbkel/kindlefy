@@ -19,7 +19,7 @@ class App {
 			importedSources.map(async importedSource => await this.conversionModule.convert(importedSource))
 		)
 
-		const syncModule = new SyncModule(config.sender)
+		const syncModule = new SyncModule(config.sender, config.kindle)
 
 		await syncModule.sync(documents)
 	}

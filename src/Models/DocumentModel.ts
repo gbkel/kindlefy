@@ -1,6 +1,8 @@
-class DocumentModel {
-	private readonly data: Buffer
-	private readonly type: any
-}
+import { SourceConfig } from "@/Protocols/SetupInputProtocol"
 
-export default DocumentModel
+export interface DocumentModel {
+	title: string
+	filename: string
+	data: Buffer
+	type: SourceConfig["type"]
+}
