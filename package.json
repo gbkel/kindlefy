@@ -6,14 +6,7 @@
   "scripts": {
     "start": "node -r module-alias/register dist/index.js",
     "dev": "nodemon src/index.ts",
-    "dev:resources": "docker-compose up",
-    "build": "rm -rf dist && tsc",
-    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
-    "test:verbose": "jest --passWithNoTests --runInBand",
-    "test:unit": "npm test -- --watch -c jest-unit-config.js",
-    "test:integration": "npm test -- --watch -c jest-integration-config.js",
-    "test:staged": "npm test -- --findRelatedTests",
-    "test:ci": "npm test -- --coverage"
+    "build": "rm -rf dist && tsc"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",

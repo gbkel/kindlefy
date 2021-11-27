@@ -10,6 +10,7 @@
 		"@typescript-eslint/indent": ["error", "tab"],
 		"no-tabs": "off",
 		"quotes": ["error", "double"],
-		"@typescript-eslint/quotes": ["error", "double"]
+		"@typescript-eslint/quotes": ["error", "double"],
+		"@typescript-eslint/consistent-type-definitions": "off"
 	}
 }

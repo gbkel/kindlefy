@@ -1,5 +1,7 @@
 import "dotenv/config"
 
-import { App } from "@/App"
+import App from "@/App"
 
-App.start()
+const app = new App()
+
+app.run()
