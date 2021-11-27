@@ -17,10 +17,8 @@ class SyncModule {
 		this.kindleConfig = kindleConfig
 	}
 
-	async sync (documents: DocumentModel[]): Promise<void> {
-		await Promise.all(
-			documents.map(async document => await this.sender.sendToKindle(document, this.kindleConfig))
-		)
+	async sync (document: DocumentModel): Promise<void> {
+		await this.sender.sendToKindle(document, this.kindleConfig)
 	}
 
 	private get sender (): SenderContract {

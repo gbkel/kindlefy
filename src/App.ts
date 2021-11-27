@@ -11,17 +11,15 @@ class App {
 	async run (): Promise<void> {
 		const config = await this.setupInputModule.fetch()
 
-		const importedSources = await Promise.all(
-			config.sources.map(async source => await this.importationModule.import(source))
-		)
-
-		const documents = await Promise.all(
-			importedSources.map(async importedSource => await this.conversionModule.convert(importedSource))
-		)
-
 		const syncModule = new SyncModule(config.sender, config.kindle)
 
-		await syncModule.sync(documents)
+		for (const source of config.sources) {
+			const importedSource = await this.importationModule.import(source)
+
+			const document = await this.conversionModule.convert(importedSource)
+
+			await syncModule.sync(document)
+		}
 	}
 }
 
