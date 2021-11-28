@@ -40,6 +40,7 @@ class MangaConverterService implements ConverterContract<Manga> {
 	}
 
 	private async URLToCBZ (url: string, title: string): Promise<string> {
+		console.log(url)
 		const result = await axios.get(url, {
 			responseType: "arraybuffer"
 		})
