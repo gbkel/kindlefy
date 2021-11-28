@@ -47,7 +47,11 @@ class MangaConverterService implements ConverterContract<Manga> {
 		const cbzFileName = `${title}.cbz`
 		const cbzFilePath = TempFolderService.mountTempPath(cbzFileName)
 
+		console.log(result.data)
+
 		await fs.promises.writeFile(cbzFilePath, result.data)
+
+		console.log("Converted")
 
 		return cbzFilePath
 	}
