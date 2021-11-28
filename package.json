@@ -6,9 +6,8 @@
   "scripts": {
     "start": "node -r module-alias/register dist/index.js",
     "dev": "nodemon src/index.ts",
-    "build:app": "rm -rf dist && tsc",
+    "build": "rm -rf dist && tsc",
     "build:action": "ncc build dist/index.js -o dist --source-map",
-    "build": "npm run build:app && npm run build:action",
     "deploy": "git checkout master && git pull && npx vpdate && git push"
   },
   "devDependencies": {
