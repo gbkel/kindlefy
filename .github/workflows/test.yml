@@ -1,0 +1,11 @@
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test Kindlefy
+    steps:
+      - name: Test Kindlefy
+        uses: ./
+        with:
+          test: 123

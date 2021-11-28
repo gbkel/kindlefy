@@ -6,7 +6,13 @@ import {
 
 class NotificationService {
 	async task<Result extends unknown>(title: string, callback: TaskCallback<Result>): Promise<Result> {
-		const runner = await task(title, async (taskConfig) => await callback(taskConfig))
+		const runner = await task(title, async (taskConfig) => {
+			try {
+				return await callback(taskConfig)
+			} catch (error) {
+				taskConfig.setError(error.message)
+			}
+		})
 
 		return runner.result
 	}

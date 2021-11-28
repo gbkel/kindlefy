@@ -1,0 +1,26 @@
+name: 'Kindlefy'
+description: 'Send diverse contents to your Kindle'
+author: 'Guilherme Mota'
+
+inputs:
+  kindle_email:
+    description: "The email you use to receive the kindle contents (per example yourname@kindle.com)."
+    required: true
+  sender:
+    description: "The senders to send contents to Kindle."
+    required: true
+  sources:
+    description: "The sources to retrieve the content to Kindle."
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.kindle_email}}
+    - ${{ inputs.senders}}
+    - ${{ inputs.sources}}
+
+branding:
+  color: 'blue'
+  icon: 'send'

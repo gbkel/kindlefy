@@ -1,8 +1,6 @@
 import axios, { AxiosInstance } from "axios"
 import * as cheerio from "cheerio"
 
-import ErrorHandlerService from "@/Services/ErrorHandlerService"
-
 import { Content, ImporterContract } from "@/Protocols/ImporterProtocol"
 import { SourceConfig } from "@/Protocols/SetupInputProtocol"
 import {
@@ -45,67 +43,57 @@ class MangaImporterService implements ImporterContract<Manga> {
 	}
 
 	private async searchManga (name: string): Promise<MangaSearchResult> {
-		try {
-			const result = await this.client.get(`/Search/${name}`)
+		const result = await this.client.get(`/Search/${name}`)
 
-			const html = result.data as string
+		const html = result.data as string
 
-			const $ = cheerio.load(html)
+		const $ = cheerio.load(html)
 
-			const links = $("a")
+		const links = $("a")
 
-			const mangaList: MangaSearchResult[] = links.toArray()
-				.filter(link => link?.attribs?.href?.startsWith("/Manga/"))
-				.filter(link => link?.children?.[0]?.type === "text")
-				.map(link => ({
-					path: link.attribs.href,
-					title: (link?.children?.[0] as any)?.data
-				}))
+		const mangaList: MangaSearchResult[] = links.toArray()
+			.filter(link => link?.attribs?.href?.startsWith("/Manga/"))
+			.filter(link => link?.children?.[0]?.type === "text")
+			.map(link => ({
+				path: link.attribs.href,
+				title: (link?.children?.[0] as any)?.data
+			}))
 
-			const [mostProbablyManga] = mangaList
+		const [mostProbablyManga] = mangaList
 
-			return mostProbablyManga
-		} catch (error) {
-			ErrorHandlerService.handle(error)
-			return null
-		}
+		return mostProbablyManga
 	}
 
 	private async searchMangaChapters (mangaPath: string): Promise<MangaChapterSearchResult[]> {
-		try {
-			const mangaSlug = mangaPath.split("/").pop()
+		const mangaSlug = mangaPath.split("/").pop()
 
-			const result = await this.client.get(mangaPath)
+		const result = await this.client.get(mangaPath)
 
-			const html = result.data as string
+		const html = result.data as string
 
-			const $ = cheerio.load(html)
+		const $ = cheerio.load(html)
 
-			const rows = $("tbody > *").toArray()
+		const rows = $("tbody > *").toArray()
 
-			const chapters: MangaChapterSearchResult[] = rows.map((row, index) => {
-				const subRows = row.children.filter(child => (child as any).name === "td")
+		const chapters: MangaChapterSearchResult[] = rows.map((row, index) => {
+			const subRows = row.children.filter(child => (child as any).name === "td")
 
-				const title = (subRows?.[0] as any)?.children?.[0]?.children?.[0]?.data as string
-				const createdAt = (subRows?.[1] as any)?.children?.[0]?.data as string
+			const title = (subRows?.[0] as any)?.children?.[0]?.children?.[0]?.data as string
+			const createdAt = (subRows?.[1] as any)?.children?.[0]?.data as string
 
-				const chapterNumber = +title.match(/Chapter.\w+/g)[0]?.replace(/\D/g, "")
+			const chapterNumber = +title.match(/Chapter.\w+/g)[0]?.replace(/\D/g, "")
 
-				const no = chapterNumber || (index + 1)
+			const no = chapterNumber || (index + 1)
 
-				return {
-					no,
-					title,
-					createdAt,
-					pagesFileUrl: `http://images.mangafreak.net/downloads/${mangaSlug}_${no}`
-				}
-			})
+			return {
+				no,
+				title,
+				createdAt,
+				pagesFileUrl: `http://images.mangafreak.net/downloads/${mangaSlug}_${no}`
+			}
+		})
 
-			return chapters
-		} catch (error) {
-			ErrorHandlerService.handle(error)
-			return []
-		}
+		return chapters
 	}
 }
 
