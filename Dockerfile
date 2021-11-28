@@ -8,7 +8,7 @@ RUN wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/set
 
 # Install NodeJS
 RUN curl -fsSL https://deb.nodesource.com/setup_14.x | sudo bash -
-RUN apt install nodejs
+RUN apt install -y nodejs
 
 # Run Kindlefy
 COPY entrypoint.sh /entrypoint.sh
