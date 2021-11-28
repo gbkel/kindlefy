@@ -14,8 +14,9 @@ inputs:
     required: true
 
 runs:
-  using: 'docker'
-  image: 'guilhermebkel/kindlefy:latest'
+  using: 'node12'
+  pre: 'setup.sh'
+  main: 'lib/index.js'
 
 branding:
   color: 'blue'
