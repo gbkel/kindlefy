@@ -9,12 +9,12 @@ class FileUtil {
 	}
 
 	parseFilePath (filePath: string): ParsedFilePath {
-		const fullname = path.basename(filePath)
+		const filename = path.basename(filePath)
 
-		const [filename, extension] = fullname.split(".")
+		const [name, extension] = filename.split(".")
 
 		return {
-			fullname,
+			name,
 			filename,
 			extension
 		}

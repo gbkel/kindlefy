@@ -26,11 +26,11 @@ class MangaConverterService implements ConverterContract<Manga> {
 
 			const mobiData = fs.createReadStream(mobiFilePath)
 
-			const { fullname } = FileUtil.parseFilePath(mobiFilePath)
+			const { filename } = FileUtil.parseFilePath(mobiFilePath)
 
 			documents.push({
 				title: fullChapterName,
-				filename: fullname,
+				filename,
 				data: mobiData,
 				type: content.sourceConfig.type
 			})

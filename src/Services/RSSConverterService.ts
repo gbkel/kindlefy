@@ -23,14 +23,14 @@ class RSSConverterService implements ConverterContract<Buffer> {
 
 		const {
 			filename,
-			fullname
+			name
 		} = FileUtil.parseFilePath(mobiFilePath)
 
 		const mobiData = fs.createReadStream(mobiFilePath)
 
 		return [{
-			title: filename,
-			filename: fullname,
+			title: name,
+			filename,
 			data: mobiData,
 			type: content.sourceConfig.type
 		}]
