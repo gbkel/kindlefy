@@ -1,11 +1,11 @@
 FROM node:14.17
 
-RUN mkdir -p /usr/src/app
+RUN mkdir -p /github/workspace
 
-WORKDIR /usr/src/app
+WORKDIR /github/workspace
 
-COPY ./package.json /usr/src/app
-COPY ./package-lock.json /usr/src/app
+COPY ./package.json /github/workspace
+COPY ./package-lock.json /github/workspace
 
 # Install Calibre
 RUN apt-get update
@@ -14,7 +14,7 @@ RUN wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/set
 
 RUN npm ci
 
-COPY . /usr/src/app
+COPY . /github/workspace
 
 RUN npm run build
 
