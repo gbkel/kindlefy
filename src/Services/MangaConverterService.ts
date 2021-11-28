@@ -1,40 +1,35 @@
 import axios from "axios"
 import { Calibre } from "node-calibre"
 import fs from "fs"
-import path from "path"
 
 import { DocumentModel } from "@/Models/DocumentModel"
 
 import { ConverterContract } from "@/Protocols/ConverterProtocol"
 import { Content } from "@/Protocols/ImporterProtocol"
-import { MangaChapterSearchResult } from "@/Protocols/MangaImporterProtocol"
+import { Manga } from "@/Protocols/MangaImporterProtocol"
+
+import TempFolderService from "@/Services/TempFolderService"
 
 import FileUtil from "@/Utils/FileUtil"
 
-class MangaConverterService implements ConverterContract<MangaChapterSearchResult[]> {
+class MangaConverterService implements ConverterContract<Manga> {
 	private readonly calibre = new Calibre()
 
-	async convert (content: Content<MangaChapterSearchResult[]>): Promise<DocumentModel[]> {
+	async convert (content: Content<Manga>): Promise<DocumentModel[]> {
 		const documents: DocumentModel[] = []
 
-		for (const mangaChapter of content.data) {
-			const cbzFilePath = await this.URLToCBZ(mangaChapter.pagesFileUrl, mangaChapter.title)
+		for (const mangaChapter of content.data.chapters) {
+			const fullChapterName = `${content.data.title} - ${mangaChapter.title}`
+
+			const cbzFilePath = await this.URLToCBZ(mangaChapter.pagesFileUrl, fullChapterName)
 			const mobiFilePath = await this.CBZToMOBI(cbzFilePath)
 
-			const mobiData = await fs.promises.readFile(mobiFilePath)
+			const mobiData = fs.createReadStream(mobiFilePath)
 
-			await Promise.all([
-				fs.promises.unlink(cbzFilePath),
-				fs.promises.unlink(mobiFilePath)
-			])
-
-			const {
-				filename,
-				fullname
-			} = FileUtil.parseFilePath(mobiFilePath)
+			const { fullname } = FileUtil.parseFilePath(mobiFilePath)
 
 			documents.push({
-				title: filename,
+				title: fullChapterName,
 				filename: fullname,
 				data: mobiData,
 				type: content.sourceConfig.type
@@ -46,11 +41,11 @@ class MangaConverterService implements ConverterContract<MangaChapterSearchResul
 
 	private async URLToCBZ (url: string, title: string): Promise<string> {
 		const result = await axios.get(url, {
-			responseType: "arraybuffer"
+			responseType: "stream"
 		})
 
 		const cbzFileName = `${title}.cbz`
-		const cbzFilePath = path.relative("tmp", cbzFileName)
+		const cbzFilePath = TempFolderService.mountTempPath(cbzFileName)
 
 		await fs.promises.writeFile(cbzFilePath, result.data)
 

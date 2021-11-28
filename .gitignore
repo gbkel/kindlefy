@@ -1,11 +1,5 @@
-# Built code
 dist
-
-# Libs
 node_modules
-
-# Environmental variables
 .env
-
-# Coverage files
 coverage
+tmp

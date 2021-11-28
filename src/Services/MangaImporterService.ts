@@ -7,10 +7,11 @@ import { Content, ImporterContract } from "@/Protocols/ImporterProtocol"
 import { SourceConfig } from "@/Protocols/SetupInputProtocol"
 import {
 	MangaSearchResult,
-	MangaChapterSearchResult
+	MangaChapterSearchResult,
+	Manga
 } from "@/Protocols/MangaImporterProtocol"
 
-class MangaImporterService implements ImporterContract<MangaChapterSearchResult[]> {
+class MangaImporterService implements ImporterContract<Manga> {
 	private readonly client: AxiosInstance
 
 	constructor () {
@@ -19,25 +20,28 @@ class MangaImporterService implements ImporterContract<MangaChapterSearchResult[
 		})
 	}
 
-	async import (sourceConfig: SourceConfig): Promise<Content<MangaChapterSearchResult[]>> {
-		const mangaChapters = await this.getMangaChapters(sourceConfig.name)
+	async import (sourceConfig: SourceConfig): Promise<Content<Manga>> {
+		const manga = await this.getManga(sourceConfig.name)
 
-		const lastMangaChapters = mangaChapters
+		manga.chapters = manga.chapters
 			.sort((a, b) => b.no - a.no)
 			.slice(0, 1)
 
 		return {
-			data: lastMangaChapters,
+			data: manga,
 			sourceConfig
 		}
 	}
 
-	private async getMangaChapters (name: string): Promise<MangaChapterSearchResult[]> {
+	private async getManga (name: string): Promise<Manga> {
 		const manga = await this.searchManga(name)
 
 		const mangaChapters = await this.searchMangaChapters(manga.path)
 
-		return mangaChapters
+		return {
+			title: manga.title,
+			chapters: mangaChapters
+		}
 	}
 
 	private async searchManga (name: string): Promise<MangaSearchResult> {
@@ -51,9 +55,11 @@ class MangaImporterService implements ImporterContract<MangaChapterSearchResult[
 			const links = $("a")
 
 			const mangaList: MangaSearchResult[] = links.toArray()
-				.filter(link => link.attribs.href.startsWith("/Manga/"))
+				.filter(link => link?.attribs?.href?.startsWith("/Manga/"))
+				.filter(link => link?.children?.[0]?.type === "text")
 				.map(link => ({
-					path: link.attribs.href
+					path: link.attribs.href,
+					title: (link?.children?.[0] as any)?.data
 				}))
 
 			const [mostProbablyManga] = mangaList

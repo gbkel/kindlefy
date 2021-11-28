@@ -1,5 +1,6 @@
 export type MangaSearchResult = {
 	path: string
+	title: string
 }
 
 export type MangaChapterSearchResult = {
@@ -7,4 +8,9 @@ export type MangaChapterSearchResult = {
 	title: string
 	createdAt: string
 	pagesFileUrl: string
+}
+
+export type Manga = {
+	title: string
+	chapters: MangaChapterSearchResult[]
 }

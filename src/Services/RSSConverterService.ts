@@ -1,5 +1,4 @@
 import fs from "fs"
-import path from "path"
 import RSSParser from "rss-parser"
 import EPUBParser from "epub-gen"
 import { Calibre } from "node-calibre"
@@ -9,6 +8,8 @@ import { DocumentModel } from "@/Models/DocumentModel"
 import { ConverterContract } from "@/Protocols/ConverterProtocol"
 import { Content } from "@/Protocols/ImporterProtocol"
 import { EbookConfig } from "@/Protocols/RSSConverterProtocol"
+
+import TempFolderService from "@/Services/TempFolderService"
 
 import FileUtil from "@/Utils/FileUtil"
 
@@ -25,12 +26,7 @@ class RSSConverterService implements ConverterContract<Buffer> {
 			fullname
 		} = FileUtil.parseFilePath(mobiFilePath)
 
-		const mobiData = await fs.promises.readFile(mobiFilePath)
-
-		await Promise.all([
-			fs.promises.unlink(epubFilePath),
-			fs.promises.unlink(mobiFilePath)
-		])
+		const mobiData = fs.createReadStream(mobiFilePath)
 
 		return [{
 			title: filename,
@@ -58,7 +54,7 @@ class RSSConverterService implements ConverterContract<Buffer> {
 		}
 
 		const epubFileName = `${parsedRSS.title}.epub`
-		const epubFilePath = path.relative("tmp", epubFileName)
+		const epubFilePath = TempFolderService.mountTempPath(epubFileName)
 
 		const epubParser = new EPUBParser(ebookConfig, epubFilePath)
 

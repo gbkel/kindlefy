@@ -3,9 +3,7 @@ import { Config } from "@/Protocols/SetupInputProtocol"
 class SetupInputModule {
 	async fetch (): Promise<Config> {
 		return {
-			kindle: {
-				email: ""
-			},
+			kindle: { email: "" },
 			sender: [],
 			sources: []
 		}
