@@ -2,7 +2,7 @@ import fs from "fs"
 import path from "path"
 
 class TempFolderService {
-	get path (): string {
+	private get path (): string {
 		return path.resolve(__dirname, "..", "..", "tmp")
 	}
 
