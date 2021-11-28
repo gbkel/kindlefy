@@ -1,5 +1,4 @@
-
-FROM ubuntu:14.04.2
+FROM ubuntu:18.04
 
 # Install Calibre
 RUN apt-get update
