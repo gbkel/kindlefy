@@ -41,17 +41,13 @@ class MangaConverterService implements ConverterContract<Manga> {
 
 	private async URLToCBZ (url: string, title: string): Promise<string> {
 		const result = await axios.get(url, {
-			responseType: "stream"
+			responseType: "arraybuffer"
 		})
 
 		const cbzFileName = `${title}.cbz`
 		const cbzFilePath = TempFolderService.mountTempPath(cbzFileName)
 
-		console.log(result.data)
-
 		await fs.promises.writeFile(cbzFilePath, result.data)
-
-		console.log("Converted")
 
 		return cbzFilePath
 	}
