@@ -6,7 +6,7 @@ RUN apt-get install -y python wget gcc xz-utils imagemagick xdg-utils build-esse
 RUN wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
 
 # Install NodeJS
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | sudo bash -
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get install -y --force-yes nodejs
 
 # Run Kindlefy
