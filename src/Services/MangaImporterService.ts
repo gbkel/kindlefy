@@ -1,6 +1,8 @@
 import axios, { AxiosInstance } from "axios"
 import * as cheerio from "cheerio"
 
+import ErrorHandlerService from "@/Services/ErrorHandlerService"
+
 import { Content, ImporterContract } from "@/Protocols/ImporterProtocol"
 import { SourceConfig } from "@/Protocols/SetupInputProtocol"
 import {
@@ -58,6 +60,7 @@ class MangaImporterService implements ImporterContract<MangaChapterSearchResult[
 
 			return mostProbablyManga
 		} catch (error) {
+			ErrorHandlerService.handle(error)
 			return null
 		}
 	}
@@ -92,6 +95,7 @@ class MangaImporterService implements ImporterContract<MangaChapterSearchResult[
 
 			return chapters
 		} catch (error) {
+			ErrorHandlerService.handle(error)
 			return []
 		}
 	}
