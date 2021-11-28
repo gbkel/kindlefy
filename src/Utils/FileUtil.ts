@@ -1,4 +1,5 @@
 import mimetype from "mime-types"
+import path from "path"
 
 import { ParsedFilePath } from "@/Protocols/FileProtocol"
 
@@ -8,7 +9,7 @@ class FileUtil {
 	}
 
 	parseFilePath (filePath: string): ParsedFilePath {
-		const fullname = filePath.split("/").pop()
+		const fullname = path.basename(filePath)
 
 		const [filename, extension] = fullname.split(".")
 

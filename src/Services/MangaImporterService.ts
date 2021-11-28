@@ -24,7 +24,7 @@ class MangaImporterService implements ImporterContract<MangaChapterSearchResult[
 
 		const lastMangaChapters = mangaChapters
 			.sort((a, b) => b.no - a.no)
-			.slice(0, 5)
+			.slice(0, 1)
 
 		return {
 			data: lastMangaChapters,
