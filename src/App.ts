@@ -16,9 +16,11 @@ class App {
 		for (const source of config.sources) {
 			const importedSource = await this.importationModule.import(source)
 
-			const document = await this.conversionModule.convert(importedSource)
+			const documents = await this.conversionModule.convert(importedSource)
 
-			await syncModule.sync(document)
+			await Promise.all(
+				documents.map(async document => await syncModule.sync(document))
+			)
 		}
 	}
 }

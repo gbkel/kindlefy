@@ -6,8 +6,8 @@ class SetupInputModule {
 			kindle: {
 				email: ""
 			},
-			sender: [{ type: "gmail", email: "", password: "" }],
-			sources: [{ url: "", type: "rss" }]
+			sender: [],
+			sources: []
 		}
 	}
 }

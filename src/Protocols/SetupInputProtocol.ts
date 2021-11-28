@@ -8,8 +8,9 @@ export type SenderConfig = {
 }
 
 export type SourceConfig = {
-	url: string
-	type: "rss"
+	url?: string
+	name?: string
+	type: "rss" | "manga"
 }
 
 export type KindleConfig = {

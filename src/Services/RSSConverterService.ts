@@ -10,16 +10,20 @@ import { ConverterContract } from "@/Protocols/ConverterProtocol"
 import { Content } from "@/Protocols/ImporterProtocol"
 import { EbookConfig } from "@/Protocols/RSSConverterProtocol"
 
-class RSSConverterService implements ConverterContract {
+import FileUtil from "@/Utils/FileUtil"
+
+class RSSConverterService implements ConverterContract<Buffer> {
 	private readonly rssParser = new RSSParser()
 	private readonly calibre = new Calibre()
 
-	async convert (content: Content): Promise<DocumentModel> {
+	async convert (content: Content<Buffer>): Promise<DocumentModel[]> {
 		const epubFilePath = await this.RSSToEPUB(content.data)
 		const mobiFilePath = await this.EPUBToMOBI(epubFilePath)
 
-		const mobiRawFileName = mobiFilePath.split("/").pop()
-		const [mobiFileName] = mobiRawFileName.split(".")
+		const {
+			filename,
+			fullname
+		} = FileUtil.parseFilePath(mobiFilePath)
 
 		const mobiData = await fs.promises.readFile(mobiFilePath)
 
@@ -28,12 +32,12 @@ class RSSConverterService implements ConverterContract {
 			fs.promises.unlink(mobiFilePath)
 		])
 
-		return {
-			title: mobiFileName,
-			filename: mobiRawFileName,
+		return [{
+			title: filename,
+			filename: fullname,
 			data: mobiData,
 			type: content.sourceConfig.type
-		}
+		}]
 	}
 
 	private async RSSToEPUB (rssBuffer: Buffer): Promise<string> {
