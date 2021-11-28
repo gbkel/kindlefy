@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"outDir": "lib",
+		"outDir": "dist",
 		"module": "CommonJS",
 		"esModuleInterop": true,
 		"sourceMap": true,
