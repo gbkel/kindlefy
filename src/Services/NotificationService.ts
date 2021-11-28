@@ -13,7 +13,7 @@ class NotificationService {
 				try {
 					return await callback(taskConfig)
 				} catch (error) {
-					taskConfig.setError(error.message)
+					taskConfig.setError(error.message || "Something went wrong")
 				}
 			})
 
