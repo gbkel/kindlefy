@@ -18,9 +18,9 @@ class App {
 
 			const documents = await this.conversionModule.convert(importedSource)
 
-			await Promise.all(
-				documents.map(async document => await syncModule.sync(document))
-			)
+			for (const document of documents) {
+				await syncModule.sync(document)
+			}
 		}
 	}
 }
