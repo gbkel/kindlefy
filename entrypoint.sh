@@ -1,3 +1,3 @@
 npm install
 
-sudo -E npm run exec
+npm run exec
