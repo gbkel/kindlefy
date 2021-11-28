@@ -2,12 +2,12 @@
   "name": "kindlefy",
   "version": "0.0.2",
   "description": "Send diverse contents to your Kindle",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node -r module-alias/register lib/index.js",
+    "start": "node -r module-alias/register dist/index.js",
     "dev": "nodemon src/index.ts",
-    "build:app": "rm -rf lib && tsc",
-    "build:action": "ncc build lib/index.js -o lib --source-map",
+    "build:app": "rm -rf dist && tsc",
+    "build:action": "ncc build dist/index.js -o dist --source-map",
     "build": "npm run build:app && npm run build:action",
     "deploy": "git checkout master && git pull && npx vpdate && git push"
   },

@@ -14,8 +14,8 @@ inputs:
     required: true
 
 runs:
-  using: 'node12'
-  main: 'lib/index.js'
+  using: 'docker'
+  image: 'Dockerfile'
 
 branding:
   color: 'blue'

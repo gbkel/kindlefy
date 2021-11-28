@@ -18,8 +18,9 @@ COPY . /usr/src/app
 
 RUN npm run build
 
-COPY . /usr/src/app
-
 ENV NODE_ENV production
 
-CMD [ "npm", "run", "start" ]
+COPY entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["sh", "/entrypoint.sh"]
+
