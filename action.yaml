@@ -15,8 +15,8 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'guilhermebkel/kindlefy:latest'
+  image: 'Dockerfile'
 
 branding:
   color: 'blue'
-  icon: 'send'
+  icon: 'book'
