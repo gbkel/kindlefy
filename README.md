@@ -20,7 +20,7 @@ That's a way to automatically sync data with your kindle, such as RSS feeds, man
 
 This repository is a Github Action so you can configure a cron job with Github Actions to run it and sync the contents with your kindle in the way to prefer.
 
-Below you can see an example of a configuration yaml that syncs contents with kindle every hour:
+Below you can see an example of a configuration yaml that syncs contents with kindle every hour (be aware to pass the sender credentials as github secrets to avoid exposing it to the public):
 
 ```yml
 on:
