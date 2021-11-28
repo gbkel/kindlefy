@@ -1,9 +1,9 @@
 <p align="center">
-	<img src="./typescript_icon.png" height="150" width="150" alt="icon example" />
+	<img src="./logo.png" height="150" width="150" alt="icon example" />
 </p>	
 
 <h3 align="center">
-  A ready-to-use Typescript Project Template 🌉
+  Send diverse contents to your Kindle 📚️
 </h3>
 
 <p align="center">
@@ -14,38 +14,19 @@
 
 ## 📌 Overview
 
-That's a ready to use Typescript Project Template to help you creating typescript apps fastly since we know the most painful part of it is setting up a basic and useful environment.
+That's a way to automatically sync data with your kindle, such as RSS feeds, manga, and too much more.
 
-## 🕋 What you are able to
-**1. Path Aliases:** You can create path aliases following the example on tsconfig.json and package.json.
-```ts
-// Instead of doing that
-import { App } from "./src/App"
+## 🕋 Features
 
-// Do that
-import { App } from "~/App"
-```
+- [X] Send to Kindle by Gmail
 
-**2. Tests:** You can create unit tests (App.spec.ts) and integration tests (App.test.ts).
-```sh
-# Run all tests
-npm test
+- [X] Send to Kindle by Outlook
 
-# Run integration tests
-npm run test:integration
+- [X] Send to Kindle by a generic SMTP Server
 
-# Run unit tests
-npm run test:unit
-```
+- [X] Import Manga
 
-**3. Docker Resources:** You can add docker resources to your project using the docker-compose (docker-compose.yaml) file.
-```sh
-npm run dev:resources
-```
-
-**4. Git Hooks:** With help of Husky (.huskyrc.json), all Git Commits are verified by tests and the git commit linter in order to ensure they follow the Git Karma principles. Besides, all Git Pushes are verified by a full test pipeline.
-
-**5. Code Style/Quality Assurance:** With help of ESLint (.eslintrc.json), all the code inside source folder are verified in order to make sure it follows the rules you have set.
+- [X] Import RSS Feed
 
 ## 🔧 Technologies
 
@@ -53,31 +34,18 @@ npm run dev:resources
 - Husky
 - Lint Staged
 - ESLint
-- Jest
 - Git Commit Message Linter
+- Cheerio
+- Nodemailer
+- Calibre
 
-## 🚀 Getting started
+## 🚀 Development environment
 
-### Development
-1. Clone this repository
-2. Start coding
+You just need to clone this repository inside your machine and run the following commands:
+
 ```sh
-# Use this command to test without settings up unit and integration tests
+npm install
 npm run dev
-
-# Use this command to test with unit and integration tests
-npm run test
 ```
 
-### Production
-1. Run the following commands
-```sh
-# Run all tests
-npm run test
-
-# Build application
-npm run build
-
-# Run built application
-npm start
-```
+**Obs:** It is needed to have [Calibre](https://calibre-ebook.com/download) installed locally as well. You can install on Ubuntu by following [this tutorial](https://calibre-ebook.com/download_linux).
