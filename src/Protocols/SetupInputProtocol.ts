@@ -1,5 +1,5 @@
 export type SenderConfig = {
-	email?: string
+	email: string
 	password?: string
 	host?: string
 	user?: string

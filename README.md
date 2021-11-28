@@ -44,6 +44,69 @@ jobs:
           sources: '[{ "type": "manga", "name": "One Piece" }, { "type": "rss", "url": "https://dev.to/feed" }]'
 ```
 
+### Sender
+
+We recommend you to create a new email to use as a sender since some services need to disable extra auth in other to be able to send emails by smtp.
+
+For now we have the current senders available:
+
+**Gmail**
+
+In order to use Gmail, you need to [Disable Unlock Captcha](https://accounts.google.com/DisplayUnlockCaptcha), Disable Two Factor Auth, [Enable Less Secure Apps Access](https://myaccount.google.com/lesssecureapps).
+
+```json
+{
+	"type": "gmail",
+	"email": "youremail@gmail.com",
+	"password": "yourpassword"
+}
+```
+
+**Outlook**
+
+```json
+{
+	"type": "outlook",
+	"email": "youremail@outlook.com",
+	"password": "yourpassword"
+}
+```
+
+**SMTP**
+
+```json
+{
+	"type": "smtp",
+	"email": "youremail@mail.com",
+	"host": "host",
+	"user": "user",
+	"password": "password",
+	"port": "port"
+}
+```
+
+### Source
+
+For now we have the following sources available to import contents to kindle:
+
+**Manga**
+
+```json
+{
+	"type": "manga",
+	"name": "some manga name"
+}
+```
+
+**RSS**
+
+```json
+{
+	"type": "rss",
+	"url": "url"
+}
+```
+
 ## 🕋 Features
 
 - [X] Send to Kindle by Gmail
