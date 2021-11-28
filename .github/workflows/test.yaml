@@ -18,4 +18,4 @@ jobs:
         with:
           kindle_email: 'test@kindle.com'
           sender: '[]'
-          sources: '[]'
+          sources: '[{ "type": "manga", "name": "One Piece" }]'
