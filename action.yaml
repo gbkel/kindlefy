@@ -15,7 +15,7 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'guilhermebkel/kindlefy:latest'
 
 branding:
   color: 'blue'
