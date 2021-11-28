@@ -16,6 +16,34 @@
 
 That's a way to automatically sync data with your kindle, such as RSS feeds, manga, and too much more.
 
+## 🎩 Getting Started
+
+This repository is a Github Action so you can configure a cron job with Github Actions to run it and sync the contents with your kindle in the way to prefer.
+
+Below you can see an example of a configuration yaml that syncs contents with kindle every hour:
+
+```yml
+on:
+  push:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  kindlefy:
+    runs-on: ubuntu-latest
+    name: Sync kindle contents.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Kindlefy
+        uses: guilhermebkel/kindlefy
+        with:
+          kindle_email: 'test@kindle.com'
+          sender: '[{ "type": "gmail", "email": "test@gmail.com", "password": "password" }]'
+          sources: '[{ "type": "manga", "name": "One Piece" }, { "type": "rss", "url": "https://dev.to/feed" }]'
+```
+
 ## 🕋 Features
 
 - [X] Send to Kindle by Gmail
@@ -39,7 +67,7 @@ That's a way to automatically sync data with your kindle, such as RSS feeds, man
 - Nodemailer
 - Calibre
 
-## 🚀 Development environment
+## 🚀 Development Environment
 
 You just need to clone this repository inside your machine and run the following commands:
 
