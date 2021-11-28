@@ -83,13 +83,15 @@ class MangaImporterService implements ImporterContract<MangaChapterSearchResult[
 				const title = (subRows?.[0] as any)?.children?.[0]?.children?.[0]?.data as string
 				const createdAt = (subRows?.[1] as any)?.children?.[0]?.data as string
 
-				const no = +title.match(/Chapter.\w+/g)[0]?.replace(/\D/g, "")
+				const chapterNumber = +title.match(/Chapter.\w+/g)[0]?.replace(/\D/g, "")
+
+				const no = chapterNumber || (index + 1)
 
 				return {
-					no: no || (index + 1),
+					no,
 					title,
 					createdAt,
-					pagesFileUrl: `http://images.mangafreak.net/downloads/${mangaSlug}_${index}`
+					pagesFileUrl: `http://images.mangafreak.net/downloads/${mangaSlug}_${no}`
 				}
 			})
 
