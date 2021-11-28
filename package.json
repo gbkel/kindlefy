@@ -7,7 +7,6 @@
     "start": "node -r module-alias/register dist/index.js",
     "dev": "nodemon src/index.ts",
     "build": "rm -rf dist && tsc",
-    "build:action": "ncc build dist/index.js -o dist --source-map",
     "deploy": "git checkout master && git pull && npx vpdate && git push",
     "exec": "node -r tsconfig-paths/register -r sucrase/register src/index.ts"
   },
