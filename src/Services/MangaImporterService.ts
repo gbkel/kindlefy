@@ -33,9 +33,9 @@ class MangaImporterService implements ImporterContract<MangaChapterSearchResult[
 	private async getMangaChapters (name: string): Promise<MangaChapterSearchResult[]> {
 		const manga = await this.searchManga(name)
 
-		const lastMangaChapters = await this.searchMangaChapters(manga.path)
+		const mangaChapters = await this.searchMangaChapters(manga.path)
 
-		return lastMangaChapters
+		return mangaChapters
 	}
 
 	private async searchManga (name: string): Promise<MangaSearchResult> {
