@@ -1,6 +1,6 @@
 {
   "name": "typescript-project-template",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A ready-to-use typescript project template",
   "main": "dist/index.js",
   "scripts": {
