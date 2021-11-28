@@ -1,1 +1,3 @@
-npm start
+npm install
+
+npm run exec

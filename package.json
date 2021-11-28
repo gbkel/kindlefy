@@ -8,7 +8,8 @@
     "dev": "nodemon src/index.ts",
     "build": "rm -rf dist && tsc",
     "build:action": "ncc build dist/index.js -o dist --source-map",
-    "deploy": "git checkout master && git pull && npx vpdate && git push"
+    "deploy": "git checkout master && git pull && npx vpdate && git push",
+    "exec": "node -r tsconfig-paths/register -r sucrase/register src/index.ts"
   },
   "devDependencies": {
     "@types/mime-types": "^2.1.1",
