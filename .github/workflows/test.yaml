@@ -1,0 +1,14 @@
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test Kindlefy
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Test Kindlefy
+        uses: ./
+        with:
+          kindle_email: test@kindle.com
+          sender: '[{ "type": "gmail", "email": "test@gmail.com", "password": "password" }]'
+          sources: '[{ "type": "manga", "name": "One Piece" }]'
