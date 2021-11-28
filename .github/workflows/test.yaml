@@ -17,5 +17,5 @@ jobs:
         uses: ./
         with:
           kindle_email: 'test@kindle.com'
-          sender: '[{ "type": "gmail", "email": "test@gmail.com", "password": "password" }]'
-          sources: '[{ "type": "manga", "name": "One Piece" }]'
+          sender: '[]'
+          sources: '[]'
