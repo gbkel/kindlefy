@@ -16,10 +16,6 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.kindle_email}}
-    - ${{ inputs.senders}}
-    - ${{ inputs.sources}}
 
 branding:
   color: 'blue'

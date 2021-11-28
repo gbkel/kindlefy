@@ -1,7 +1,7 @@
 {
-  "name": "typescript-project-template",
+  "name": "kindlefy",
   "version": "0.0.2",
-  "description": "A ready-to-use typescript project template",
+  "description": "Send diverse contents to your Kindle",
   "main": "dist/index.js",
   "scripts": {
     "start": "node -r module-alias/register dist/index.js",
