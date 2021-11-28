@@ -2,18 +2,20 @@
   "name": "kindlefy",
   "version": "0.0.2",
   "description": "Send diverse contents to your Kindle",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "start": "node -r module-alias/register dist/index.js",
+    "start": "node -r module-alias/register lib/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "rm -rf dist && tsc",
-    "deploy": "git checkout master && git pull && npx vpdate && git push"
+    "build": "rm -rf lib && tsc",
+    "build:action": "ncc build lib/index.js -o lib --source-map",
+    "deploy": "git checkout master && git pull && npm run build && npm run build:action && npx vpdate && git push"
   },
   "devDependencies": {
     "@types/mime-types": "^2.1.1",
     "@types/node": "^14.0.1",
     "@types/nodemailer": "^6.4.4",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@vercel/ncc": "^0.32.0",
     "eslint": "^7.2.0",
     "eslint-config-standard-with-typescript": "^17.0.0",
     "eslint-plugin-import": "^2.21.2",
