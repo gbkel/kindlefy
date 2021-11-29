@@ -10,6 +10,7 @@ export type SenderConfig = {
 export type SourceConfig = {
 	url?: string
 	name?: string
+	count?: number
 	type: "rss" | "manga"
 }
 

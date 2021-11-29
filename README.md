@@ -20,7 +20,7 @@ That's a way to automatically sync data with your kindle, such as RSS feeds, man
 
 This repository is a Github Action so you can configure a cron job with Github Actions to run it and sync the contents with your kindle in the way to prefer.
 
-Below you can see an example of a configuration yaml that syncs contents with kindle every hour (be aware to pass the sender credentials as github secrets to avoid exposing it to the public):
+Below you can see an example of a configuration yaml that syncs contents with kindle every hour *(be aware to pass the sender credentials as github secrets to avoid exposing it to the public)*:
 
 ```yml
 on:
@@ -87,14 +87,15 @@ In order to use Gmail, you need to [Disable Unlock Captcha](https://accounts.goo
 
 ### Source
 
-For now we have the following sources available to import contents to kindle:
+For now we have the following sources available to import contents to kindle *(the contents usually come in descending creation order)*:
 
 **Manga**
 
 ```json
 {
 	"type": "manga",
-	"name": "some manga name"
+	"name": "some manga name",
+	"count": 10 // Chapters count
 }
 ```
 
