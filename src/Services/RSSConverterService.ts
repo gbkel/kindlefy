@@ -12,31 +12,33 @@ import { EbookConfig } from "@/Protocols/RSSConverterProtocol"
 import TempFolderService from "@/Services/TempFolderService"
 
 import FileUtil from "@/Utils/FileUtil"
+import DateUtil from "@/Utils/DateUtil"
 
 class RSSConverterService implements ConverterContract<Buffer> {
 	private readonly rssParser = new RSSParser()
 	private readonly calibre = new Calibre()
 
 	async convert (content: Content<Buffer>): Promise<DocumentModel[]> {
-		const epubFilePath = await this.RSSToEPUB(content.data)
+		const ebookConfig = await this.RSSToEbookConfig(content.data)
+
+		ebookConfig.title = `${ebookConfig.title} - ${DateUtil.todayFormattedDate}`
+
+		const epubFilePath = await this.EbookConfigToEPUB(ebookConfig)
 		const mobiFilePath = await this.EPUBToMOBI(epubFilePath)
 
-		const {
-			filename,
-			name
-		} = FileUtil.parseFilePath(mobiFilePath)
+		const { filename } = FileUtil.parseFilePath(mobiFilePath)
 
 		const mobiData = fs.createReadStream(mobiFilePath)
 
 		return [{
-			title: name,
+			title: ebookConfig.title,
 			filename,
 			data: mobiData,
 			type: content.sourceConfig.type
 		}]
 	}
 
-	private async RSSToEPUB (rssBuffer: Buffer): Promise<string> {
+	private async RSSToEbookConfig (rssBuffer: Buffer): Promise<EbookConfig> {
 		const rssString = rssBuffer.toString()
 
 		const parsedRSS = await this.rssParser.parseString(rssString)
@@ -53,7 +55,11 @@ class RSSConverterService implements ConverterContract<Buffer> {
 			}))
 		}
 
-		const epubFileName = `${parsedRSS.title}.epub`
+		return ebookConfig
+	}
+
+	private async EbookConfigToEPUB (ebookConfig: EbookConfig): Promise<string> {
+		const epubFileName = `${ebookConfig.title}.epub`
 		const epubFilePath = TempFolderService.mountTempPath(epubFileName)
 
 		const epubParser = new EPUBParser(ebookConfig, epubFilePath)
