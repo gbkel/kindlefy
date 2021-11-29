@@ -1,4 +1,4 @@
-name: Test
+name: Demo
 
 on:
   push:
@@ -8,14 +8,14 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Test Kindlefy
+    name: Kindlefy Demo
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Test Kindlefy
+      - name: Kindlefy
         uses: ./
         with:
-          kindle_email: 'test@kindle.com'
+          kindle_email: 'demo@kindle.com'
           sender: '[]'
           sources: '[{ "type": "manga", "name": "One Piece" }, { "type": "rss", "url": "https://dev.to/feed" }]'
