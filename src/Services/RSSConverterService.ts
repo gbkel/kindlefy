@@ -21,7 +21,7 @@ class RSSConverterService implements ConverterContract<Buffer> {
 	async convert (content: Content<Buffer>): Promise<DocumentModel[]> {
 		const ebookConfig = await this.RSSToEbookConfig(content.data)
 
-		ebookConfig.title = `${ebookConfig.title} - ${DateUtil.todayFormattedDate}`
+		ebookConfig.title = `${ebookConfig.title} ${DateUtil.todayFormattedDate}`
 
 		const epubFilePath = await this.EbookConfigToEPUB(ebookConfig)
 		const mobiFilePath = await this.EPUBToMOBI(epubFilePath)

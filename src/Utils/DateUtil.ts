@@ -2,10 +2,10 @@ class DateUtil {
 	private readonly dateFormatter = new Intl.DateTimeFormat()
 
 	/**
-	 * Returns date in MM/DD/YYYY format based on the current locale.
+	 * Returns date in MM-DD-YYYY format based on the current locale.
 	 */
 	formatDate (date: Date): string {
-		const formattedDate = this.dateFormatter.format(date)
+		const formattedDate = this.dateFormatter.format(date)?.replace("/", "-")
 
 		return formattedDate
 	}
