@@ -5,7 +5,7 @@ class DateUtil {
 	 * Returns date in MM-DD-YYYY format based on the current locale.
 	 */
 	formatDate (date: Date): string {
-		const formattedDate = this.dateFormatter.format(date)?.replace("/", "-")
+		const formattedDate = this.dateFormatter.format(date)?.replace(/\//g, "-")
 
 		return formattedDate
 	}
