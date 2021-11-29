@@ -8,7 +8,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Kindlefy Demo
+    name: Start Kindlefy Demo
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
