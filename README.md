@@ -120,6 +120,10 @@ For now we have the following sources available to import contents to kindle *(t
 
 - [X] Import RSS Feed
 
+- [ ] Choosing which collection to put the documents
+
+- [ ] Sending more than one document per mail
+
 ## 🔧 Technologies
 
 - Typescript
