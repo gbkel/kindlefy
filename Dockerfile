@@ -6,6 +6,9 @@ RUN apt-get install -y sudo python wget gcc xz-utils imagemagick xdg-utils build
 RUN sudo -v && wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
 ENV XDG_RUNTIME_DIR '/tmp/runtime-root'
 
+# Install Github
+RUN apt-get install -y git-all
+
 # Run Kindlefy
 COPY . .
 ENTRYPOINT ["sh", "/entrypoint.sh"]
