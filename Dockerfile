@@ -7,5 +7,5 @@ RUN sudo -v && wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre
 ENV XDG_RUNTIME_DIR '/tmp/runtime-root'
 
 # Run Kindlefy
-COPY entrypoint.sh /entrypoint.sh
+COPY . .
 ENTRYPOINT ["sh", "/entrypoint.sh"]
