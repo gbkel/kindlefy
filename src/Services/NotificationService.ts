@@ -9,7 +9,7 @@ import ErrorHandlerService from "@/Services/ErrorHandlerService"
 
 class NotificationService {
 	async task<Result extends unknown>(title: string, callback: TaskCallback<Result>): Promise<Result> {
-		const isGithubActionContext = core.getInput("kindle_email")
+		const isGithubActionContext = Boolean(core.getInput("kindle_email"))
 
 		if (isGithubActionContext) {
 			return await this.githubActionTask(title, callback)
