@@ -36,10 +36,10 @@ class NotificationService {
 
 	private async githubActionTask<Result extends unknown>(title: string, callbackFn: TaskCallback<Result>): Promise<Result> {
 		const taskConfig: TaskConfig = {
-			setError: (error) => core.info(`❌ ${error}`),
-			setOutput: (output) => core.info(`✔️ ${output}`),
-			setStatus: (status) => core.info(`🔔 ${status}`),
-			setWarning: (warning) => core.info(`⚠️ ${warning}`),
+			setError: (error) => core.info(`[${title}] ❌ ${error}`),
+			setOutput: (output) => core.info(`[${title}] ✔️ ${output}`),
+			setStatus: (status) => core.info(`[${title}] 🔔 ${status}`),
+			setWarning: (warning) => core.info(`[${title}] ⚠️ ${warning}`),
 			setTitle: (title) => core.info(`💎 ${title}`)
 		}
 
