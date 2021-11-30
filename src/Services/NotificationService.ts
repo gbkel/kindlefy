@@ -36,13 +36,13 @@ class NotificationService {
 
 	private async githubActionTask<Result extends unknown>(title: string, callbackFn: TaskCallback<Result>): Promise<Result> {
 		try {
-			core.info(title)
+			core.info(`➡️ ${title}`)
 
 			return await callbackFn({
-				setError: (error) => core.error(error),
-				setOutput: (output) => core.debug(output),
-				setStatus: (status) => core.debug(status),
-				setWarning: (warning) => core.warning(warning)
+				setError: (error) => core.error(`🚫 ${error}`),
+				setOutput: (output) => core.debug(`✔️ ${output}`),
+				setStatus: (status) => core.debug(`🔔 ${status}`),
+				setWarning: (warning) => core.warning(`⚠️ ${warning}`)
 			})
 		} catch (error) {
 			core.error(error.message || error)
