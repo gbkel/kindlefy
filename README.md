@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Kindlefy
-        uses: gbkel/kindlefy@v1.1.7
+        uses: gbkel/kindlefy@v1.1.8
         with:
           kindle_email: 'test@kindle.com'
           sender: '[{ "type": "gmail", "email": "test@gmail.com", "password": "password" }]'
@@ -94,7 +94,7 @@ For now we have the following sources available to import contents to kindle *(t
 {
 	"type": "manga",
 	"name": "some manga name",
-	"count": 10 // Chapters count
+	"count": 1 // Most recent chapters count
 }
 ```
 
@@ -122,6 +122,8 @@ For now we have the following sources available to import contents to kindle *(t
 - [ ] Choosing which collection to put the documents
 
 - [ ] Sending more than one document per mail
+
+- [ ] Creating the document title in a wiser way to support being ordered correctly on kindle
 
 ## 🔧 Technologies
 
