@@ -4,7 +4,7 @@
   "description": "Send diverse contents to your Kindle",
   "main": "dist/index.js",
   "scripts": {
-    "start": "node -r module-alias/register dist/index.js",
+    "start": "npm install && npm run dev",
     "dev": "nodemon src/index.ts",
     "build": "rm -rf dist && tsc",
     "deploy": "git checkout master && git pull && npx vpdate && git push",
@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.6.0",
+    "ansi-styles": "^5.1.0",
     "axios": "^0.24.0",
     "cheerio": "^1.0.0-rc.10",
     "dotenv": "^8.2.0",

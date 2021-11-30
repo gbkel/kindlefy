@@ -1,5 +1,6 @@
 import task from "tasuku"
 import * as core from "@actions/core"
+import style from "ansi-styles"
 
 import {
 	TaskCallback, TaskConfig
@@ -36,19 +37,24 @@ class NotificationService {
 
 	private async githubActionTask<Result extends unknown>(title: string, callbackFn: TaskCallback<Result>): Promise<Result> {
 		const taskConfig: TaskConfig = {
-			setError: (error) => core.info(`[${title}] ❌ ${error}`),
-			setOutput: (output) => core.info(`[${title}] ✔️ ${output}`),
-			setStatus: (status) => core.info(`[${title}] 🔔 ${status}`),
-			setWarning: (warning) => core.info(`[${title}] ⚠️ ${warning}`),
-			setTitle: (title) => core.info(`💎 ${title}`)
+			setError: (error) => core.error(`${style.color.red.open}❌ ${error}${style.color.red.close}`),
+			setOutput: (output) => core.info(`${style.color.green.open}✔️ ${output}${style.color.green.close}`),
+			setStatus: (status) => core.info(`${style.color.gray.open}🔔 ${status}${style.color.gray.close}`),
+			setWarning: (warning) => core.warning(`${style.color.yellow.open}⚠️ ${warning}${style.color.yellow.close}`)
 		}
 
 		try {
-			taskConfig.setTitle(title)
+			const result = await core.group(`💎 ${title}`, async () => {
+				try {
+					return await callbackFn(taskConfig)
+				} catch (error) {
+					taskConfig.setError(error.message || error)
+				}
+			})
 
-			return await callbackFn(taskConfig)
+			return result
 		} catch (error) {
-			taskConfig.setError(error.message || error)
+			ErrorHandlerService.handle(error)
 		}
 	}
 }
