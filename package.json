@@ -4,7 +4,7 @@
   "description": "Send diverse contents to your Kindle",
   "main": "dist/index.js",
   "scripts": {
-    "start": "npm install && npm run dev",
+    "start": "node -r module-alias/register dist/index.js",
     "dev": "nodemon src/index.ts",
     "build": "rm -rf dist && tsc",
     "deploy": "git checkout master && git pull && npx vpdate && git push",
