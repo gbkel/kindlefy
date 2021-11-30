@@ -123,8 +123,6 @@ For now we have the following sources available to import contents to kindle *(t
 
 - [ ] Sending more than one document per mail
 
-- [ ] Creating the document title in a wiser way to support being ordered correctly on kindle
-
 ## 🔧 Technologies
 
 - Typescript
