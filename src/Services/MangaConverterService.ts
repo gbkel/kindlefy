@@ -9,32 +9,36 @@ import { Content } from "@/Protocols/ImporterProtocol"
 import { Manga } from "@/Protocols/MangaImporterProtocol"
 
 import TempFolderService from "@/Services/TempFolderService"
+import QueueService from "@/Services/QueueService"
 
 import FileUtil from "@/Utils/FileUtil"
 
 class MangaConverterService implements ConverterContract<Manga> {
 	private readonly calibre = new Calibre()
+	private readonly queue = new QueueService({ concurrency: 5 })
 
 	async convert (content: Content<Manga>): Promise<DocumentModel[]> {
-		const documents: DocumentModel[] = []
+		const documents: DocumentModel[] = await Promise.all(
+			content.data.chapters.map(async mangaChapter => (
+				await this.queue.enqueue(async () => {
+					const fullChapterName = `${content.data.title} - ${mangaChapter.title}`
 
-		for (const mangaChapter of content.data.chapters) {
-			const fullChapterName = `${content.data.title} - ${mangaChapter.title}`
+					const cbzFilePath = await this.URLToCBZ(mangaChapter.pagesFileUrl, fullChapterName)
+					const mobiFilePath = await this.CBZToMOBI(cbzFilePath)
 
-			const cbzFilePath = await this.URLToCBZ(mangaChapter.pagesFileUrl, fullChapterName)
-			const mobiFilePath = await this.CBZToMOBI(cbzFilePath)
+					const mobiData = fs.createReadStream(mobiFilePath)
 
-			const mobiData = fs.createReadStream(mobiFilePath)
+					const { filename } = FileUtil.parseFilePath(mobiFilePath)
 
-			const { filename } = FileUtil.parseFilePath(mobiFilePath)
-
-			documents.push({
-				title: fullChapterName,
-				filename,
-				data: mobiData,
-				type: content.sourceConfig.type
-			})
-		}
+					return {
+						title: fullChapterName,
+						filename,
+						data: mobiData,
+						type: content.sourceConfig.type
+					}
+				})
+			))
+		)
 
 		return documents
 	}
