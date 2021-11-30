@@ -2,7 +2,7 @@ import task from "tasuku"
 import * as core from "@actions/core"
 
 import {
-	TaskCallback
+	TaskCallback, TaskConfig
 } from "@/Protocols/NotificationProtocol"
 
 import ErrorHandlerService from "@/Services/ErrorHandlerService"
@@ -35,17 +35,20 @@ class NotificationService {
 	}
 
 	private async githubActionTask<Result extends unknown>(title: string, callbackFn: TaskCallback<Result>): Promise<Result> {
-		try {
-			core.info(`➡️ ${title}`)
+		const taskConfig: TaskConfig = {
+			setError: (error) => core.info(`🚫 ${error}`),
+			setOutput: (output) => core.info(`✔️ ${output}`),
+			setStatus: (status) => core.info(`🔔 ${status}`),
+			setWarning: (warning) => core.info(`⚠️ ${warning}`),
+			setTitle: (title) => core.info(`➡️ ${title}`)
+		}
 
-			return await callbackFn({
-				setError: (error) => core.error(`🚫 ${error}`),
-				setOutput: (output) => core.debug(`✔️ ${output}`),
-				setStatus: (status) => core.debug(`🔔 ${status}`),
-				setWarning: (warning) => core.warning(`⚠️ ${warning}`)
-			})
+		try {
+			taskConfig.setTitle(title)
+
+			return await callbackFn(taskConfig)
 		} catch (error) {
-			core.error(error.message || error)
+			taskConfig.setError(error.message || error)
 		}
 	}
 }

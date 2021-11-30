@@ -1,4 +1,5 @@
 export type TaskConfig = {
+	setTitle: (title: string) => void
 	setError: (error: string) => void
 	setOutput: (output: string) => void
 	setStatus: (status: string) => void
