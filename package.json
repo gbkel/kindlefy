@@ -8,9 +8,16 @@
     "dev": "nodemon src/index.ts",
     "build": "rm -rf dist && tsc",
     "deploy": "git checkout master && git pull && npx vpdate && git push",
-    "exec": "node -r tsconfig-paths/register -r sucrase/register src/index.ts"
+    "exec": "node -r tsconfig-paths/register -r sucrase/register src/index.ts",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:verbose": "jest --passWithNoTests --runInBand",
+    "test:unit": "npm test -- --watch -c jest-unit-config.js",
+    "test:integration": "npm test -- --watch -c jest-integration-config.js",
+    "test:staged": "npm test -- --findRelatedTests",
+    "test:ci": "npm test -- --coverage"
   },
   "devDependencies": {
+    "@types/jest": "^25.2.3",
     "@types/mime-types": "^2.1.1",
     "@types/node": "^14.0.1",
     "@types/nodemailer": "^6.4.4",
@@ -27,6 +34,8 @@
     "nodemon": "^2.0.4",
     "sucrase": "^3.15.0",
     "tsconfig-paths": "^3.9.0",
+    "ts-jest": "^26.0.0",
+    "jest": "^26.0.1",
     "typescript": "^4.1.0"
   },
   "dependencies": {
