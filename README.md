@@ -133,6 +133,7 @@ For now we have the following sources available to import contents to kindle *(t
 - Cheerio
 - Nodemailer
 - Calibre
+- Kindle Comic Converter
 
 ## 🚀 Development Environment
 
@@ -143,4 +144,8 @@ npm install
 npm run dev
 ```
 
-**Obs:** It is needed to have [Calibre](https://calibre-ebook.com/download) installed locally as well. You can install on Ubuntu by following [this tutorial](https://calibre-ebook.com/download_linux).
+**Obs:**
+
+1. It is needed to have [Calibre](https://calibre-ebook.com/download) installed locally.
+
+2. It is needed to have [Kindle Comic Converter](https://github.com/ciromattia/kcc) installed locally.

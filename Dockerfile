@@ -9,6 +9,16 @@ ENV XDG_RUNTIME_DIR '/tmp/runtime-root'
 # Install Git
 RUN apt-get install -y git-all
 
+# Install Kindle Comic Converter
+RUN apt-get install python3 python3-dev python3-pip python3-pyqt5 libpng-dev libjpeg-dev p7zip-full unrar
+RUN pip3 install --upgrade pillow python-slugify psutil scandir raven
+RUN wget https://ia801700.us.archive.org/14/items/kindlegen/kindlegen
+RUN mv kindlegen /usr/local/bin
+RUN wget -o kcc.deb https://kcc.iosphe.re/Linux
+RUN apt install ./kcc.deb -y
+RUN git clone https://github.com/ciromattia/kcc.git
+RUN mv kcc /kcc
+
 # Run Kindlefy
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["sh", "/entrypoint.sh"]

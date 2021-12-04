@@ -1,7 +1,8 @@
 import EPUBParser from "epub-gen"
-import { Calibre } from "node-calibre"
 
 import { GenerateEPUBOptions } from "@/Protocols/EbookGeneratorProtocol"
+
+import ProcessCommandService from "@/Services/ProcessCommandService"
 
 class EbookGeneratorService {
 	async generateEPUB (filePath: string, options: GenerateEPUBOptions): Promise<string> {
@@ -12,18 +13,29 @@ class EbookGeneratorService {
 		return filePath
 	}
 
-	async generateMOBIFromEPUB (epubFilePath: string): Promise<string> {
-		const calibre = new Calibre()
+	// async generateMOBIFromEPUB (epubFilePath: string): Promise<string> {
+	// 	const calibre = new Calibre()
 
-		const mobiFilePath = await calibre.ebookConvert(epubFilePath, "mobi")
+	// 	const mobiFilePath = await calibre.ebookConvert(epubFilePath, "mobi")
+
+	// 	return mobiFilePath
+	// }
+
+	async generateMOBIFromEPUB (epubFilePath: string): Promise<string> {
+		const mobiFilePath = `${epubFilePath}.mobi`
+
+		await ProcessCommandService.run("ebook-convert", [epubFilePath, mobiFilePath])
 
 		return mobiFilePath
 	}
 
 	async generateMOBIFromCBZ (cbzFilePath: string): Promise<string> {
-		const calibre = new Calibre()
+		const mobiFilePath = cbzFilePath.replace(".cbz", ".mobi")
 
-		const mobiFilePath = await calibre.ebookConvert(cbzFilePath, "mobi")
+		await ProcessCommandService.run("python3 /kcc/kcc-c2e.py", [cbzFilePath], {
+			profile: "KPW",
+			format: "MOBI"
+		})
 
 		return mobiFilePath
 	}
