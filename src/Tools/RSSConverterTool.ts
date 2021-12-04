@@ -13,7 +13,7 @@ import EbookGeneratorService from "@/Services/EbookGeneratorService"
 import FileUtil from "@/Utils/FileUtil"
 import DateUtil from "@/Utils/DateUtil"
 
-class RSSConverterTOol implements ConverterContract<Buffer> {
+class RSSConverterTool implements ConverterContract<Buffer> {
 	private readonly parserService = new ParserService()
 	private readonly ebookGeneratorService = new EbookGeneratorService()
 
@@ -73,4 +73,4 @@ class RSSConverterTOol implements ConverterContract<Buffer> {
 	}
 }
 
-export default new RSSConverterTOol()
+export default new RSSConverterTool()

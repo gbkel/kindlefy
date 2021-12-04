@@ -11,7 +11,7 @@ import ParserService from "@/Services/ParserService"
 
 class MangaImporterTool implements ImporterContract<Manga> {
 	private readonly httpService: HttpService
-	private readonly parserService: ParserService
+	private readonly parserService = new ParserService()
 
 	constructor () {
 		this.httpService = new HttpService({
