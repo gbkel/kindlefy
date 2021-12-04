@@ -1,4 +1,4 @@
-name: Demo
+name: Test Kindlefy
 
 on:
   push:
@@ -13,7 +13,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Kindlefy
+      - name: Install Packages
+        run: npm install
+
+      - name: Run Kindlefy Integration and Unit tests
+        run: npm run test:ci
+
+      - name: Run Kindlefy Github Action
         uses: ./
         with:
           kindle_email: 'demo@kindle.com'
