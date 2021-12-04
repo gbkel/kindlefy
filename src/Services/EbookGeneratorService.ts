@@ -26,7 +26,7 @@ class EbookGeneratorService {
 
 		await ProcessCommandService.run("ebook-convert", [cbzFilePath, mobiFilePath], {
 			wide: true,
-			comicImageSize: "758x1024"
+			outputProfile: "tablet"
 		})
 
 		return mobiFilePath
