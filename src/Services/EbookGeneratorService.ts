@@ -24,7 +24,9 @@ class EbookGeneratorService {
 	async generateMOBIFromCBZ (cbzFilePath: string): Promise<string> {
 		const mobiFilePath = `${cbzFilePath}.mobi`
 
-		await ProcessCommandService.run("ebook-convert", [cbzFilePath, mobiFilePath])
+		await ProcessCommandService.run("ebook-convert", [cbzFilePath, mobiFilePath], {
+			wide: true
+		})
 
 		return mobiFilePath
 	}
