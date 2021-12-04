@@ -25,7 +25,8 @@ class EbookGeneratorService {
 		const mobiFilePath = `${cbzFilePath}.mobi`
 
 		await ProcessCommandService.run("ebook-convert", [cbzFilePath, mobiFilePath], {
-			wide: true
+			wide: true,
+			comicImageSize: "758x1024"
 		})
 
 		return mobiFilePath

@@ -9,7 +9,11 @@ class ProcessCommandService {
 		const formattedArguments = this.formatArguments(args)
 		const formattedOptions = this.formatOptions(options)
 
-		const execList = [command, ...formattedOptions, ...formattedArguments]
+		/**
+		 * WARNING: Make sure to add arguments first since some CLI commands
+		 * only allow them to come first and options in the last.
+		 */
+		const execList = [command, ...formattedArguments, ...formattedOptions]
 
 		const execString = execList.join(" ")
 
