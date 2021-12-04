@@ -1,5 +1,3 @@
-import * as cheerio from "cheerio"
-
 import { Content, ImporterContract } from "@/Protocols/ImporterProtocol"
 import { SourceConfig } from "@/Protocols/SetupInputProtocol"
 import {
@@ -9,9 +7,11 @@ import {
 } from "@/Protocols/MangaImporterProtocol"
 
 import HttpService from "@/Services/HttpService"
+import ParserService from "@/Services/ParserService"
 
 class MangaImporterTool implements ImporterContract<Manga> {
 	private readonly httpService: HttpService
+	private readonly parserService: ParserService
 
 	constructor () {
 		this.httpService = new HttpService({
@@ -48,7 +48,7 @@ class MangaImporterTool implements ImporterContract<Manga> {
 	private async searchManga (name: string): Promise<MangaSearchResult> {
 		const html = await this.httpService.toString(`/Search/${name}`)
 
-		const $ = cheerio.load(html)
+		const $ = this.parserService.parseHTML(html)
 
 		const links = $("a")
 
@@ -70,7 +70,7 @@ class MangaImporterTool implements ImporterContract<Manga> {
 
 		const html = await this.httpService.toString(mangaPath)
 
-		const $ = cheerio.load(html)
+		const $ = this.parserService.parseHTML(html)
 
 		const rows = $("tbody > *").toArray()
 
