@@ -10,7 +10,7 @@ ENV XDG_RUNTIME_DIR '/tmp/runtime-root'
 RUN apt-get install -y git-all
 
 # Install Kindle Comic Converter
-RUN apt-get install -y python3 python3-dev python3-pip python3-pyqt5 libpng-dev libjpeg-dev p7zip-full unrar
+RUN apt-get install -y python3 python3-dev python3-pip python3-pyqt5 libpng-dev libjpeg-dev p7zip-full
 RUN pip3 install --upgrade pillow python-slugify psutil scandir raven
 RUN wget https://ia801700.us.archive.org/14/items/kindlegen/kindlegen
 RUN mv kindlegen /usr/local/bin
