@@ -50,9 +50,9 @@ class MangaImporterTool implements ImporterContract<Manga> {
 
 		const $ = this.parserService.parseHTML(html)
 
-		const links = $("a")
+		const links = $("a").toArray()
 
-		const mangaList: MangaSearchResult[] = links.toArray()
+		const mangaList: MangaSearchResult[] = links
 			.filter(link => link?.attribs?.href?.startsWith("/Manga/"))
 			.filter(link => link?.children?.[0]?.type === "text")
 			.map(link => ({
