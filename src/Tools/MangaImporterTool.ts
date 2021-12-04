@@ -9,7 +9,7 @@ import {
 	Manga
 } from "@/Protocols/MangaImporterProtocol"
 
-class MangaImporterService implements ImporterContract<Manga> {
+class MangaImporterTool implements ImporterContract<Manga> {
 	private readonly client: AxiosInstance
 
 	constructor () {
@@ -99,4 +99,4 @@ class MangaImporterService implements ImporterContract<Manga> {
 	}
 }
 
-export default new MangaImporterService()
+export default new MangaImporterTool()

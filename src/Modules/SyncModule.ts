@@ -4,9 +4,9 @@ import { KindleConfig, SenderConfig } from "@/Protocols/SetupInputProtocol"
 import { SenderContract } from "@/Protocols/SenderProtocol"
 import { SMTPConfig } from "@/Protocols/SMTPSenderProtocol"
 
-import SMTPSenderService from "@/Services/SMTPSenderService"
-import GmailSenderService from "@/Services/GmailSenderService"
-import OutlookSenderService from "@/Services/OutlookSenderService"
+import SMTPSenderTool from "@/Tools/SMTPSenderTool"
+import GmailSenderTool from "@/Tools/GmailSenderTool"
+import OutlookSenderTool from "@/Tools/OutlookSenderTool"
 
 class SyncModule {
 	private readonly senderConfig: SenderConfig[]
@@ -25,9 +25,9 @@ class SyncModule {
 		const [config] = this.senderConfig
 
 		const senderMap: Record<SenderConfig["type"], SenderContract> = {
-			smtp: new SMTPSenderService(config as SMTPConfig),
-			gmail: new GmailSenderService(config.email, config.password),
-			outlook: new OutlookSenderService(config.email, config.password)
+			smtp: new SMTPSenderTool(config as SMTPConfig),
+			gmail: new GmailSenderTool(config.email, config.password),
+			outlook: new OutlookSenderTool(config.email, config.password)
 		}
 
 		return senderMap[config.type]

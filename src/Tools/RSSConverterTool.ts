@@ -14,7 +14,7 @@ import TempFolderService from "@/Services/TempFolderService"
 import FileUtil from "@/Utils/FileUtil"
 import DateUtil from "@/Utils/DateUtil"
 
-class RSSConverterService implements ConverterContract<Buffer> {
+class RSSConverterTOol implements ConverterContract<Buffer> {
 	private readonly rssParser = new RSSParser()
 	private readonly calibre = new Calibre()
 
@@ -76,4 +76,4 @@ class RSSConverterService implements ConverterContract<Buffer> {
 	}
 }
 
-export default new RSSConverterService()
+export default new RSSConverterTOol()

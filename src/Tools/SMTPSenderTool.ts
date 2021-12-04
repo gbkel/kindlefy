@@ -8,7 +8,7 @@ import { KindleConfig } from "@/Protocols/SetupInputProtocol"
 
 import FileUtil from "@/Utils/FileUtil"
 
-class SMTPSenderService implements SenderContract {
+class SMTPSenderTool implements SenderContract {
 	private readonly config: SMTPConfig
 	private readonly mailer: Transporter<SentMessageInfo>
 
@@ -47,4 +47,4 @@ class SMTPSenderService implements SenderContract {
 	}
 }
 
-export default SMTPSenderService
+export default SMTPSenderTool

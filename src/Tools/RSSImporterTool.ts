@@ -3,7 +3,7 @@ import axios from "axios"
 import { Content, ImporterContract } from "@/Protocols/ImporterProtocol"
 import { SourceConfig } from "@/Protocols/SetupInputProtocol"
 
-class RSSImporterService implements ImporterContract<Buffer> {
+class RSSImporterTool implements ImporterContract<Buffer> {
 	async import (sourceConfig: SourceConfig): Promise<Content<Buffer>> {
 		const rss = await axios.get(sourceConfig.url, {
 			responseType: "arraybuffer"
@@ -16,4 +16,4 @@ class RSSImporterService implements ImporterContract<Buffer> {
 	}
 }
 
-export default new RSSImporterService()
+export default new RSSImporterTool()

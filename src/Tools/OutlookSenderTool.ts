@@ -2,13 +2,13 @@ import { DocumentModel } from "@/Models/DocumentModel"
 import { SenderContract } from "@/Protocols/SenderProtocol"
 import { KindleConfig } from "@/Protocols/SetupInputProtocol"
 
-import SMTPSenderService from "@/Services/SMTPSenderService"
+import SMTPSenderTool from "@/Tools/SMTPSenderTool"
 
-class OutlookSenderService implements SenderContract {
-	private readonly smtpSenderService: SMTPSenderService
+class OutlookSenderTool implements SenderContract {
+	private readonly smtpSenderTool: SMTPSenderTool
 
 	constructor (email: string, password: string) {
-		this.smtpSenderService = new SMTPSenderService({
+		this.smtpSenderTool = new SMTPSenderTool({
 			email,
 			password,
 			user: email
@@ -18,8 +18,8 @@ class OutlookSenderService implements SenderContract {
 	}
 
 	async sendToKindle (document: DocumentModel, kindleConfig: KindleConfig): Promise<void> {
-		return await this.smtpSenderService.sendToKindle(document, kindleConfig)
+		return await this.smtpSenderTool.sendToKindle(document, kindleConfig)
 	}
 }
 
-export default OutlookSenderService
+export default OutlookSenderTool

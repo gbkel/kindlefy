@@ -4,8 +4,8 @@ import { Content } from "@/Protocols/ImporterProtocol"
 import { SourceConfig } from "@/Protocols/SetupInputProtocol"
 import { ConverterContract } from "@/Protocols/ConverterProtocol"
 
-import RSSConverterService from "@/Services/RSSConverterService"
-import MangaConverterService from "@/Services/MangaConverterService"
+import RSSConverterTool from "@/Tools/RSSConverterTool"
+import MangaConverterTool from "@/Tools/MangaConverterTool"
 
 class ConversionModule {
 	async convert (content: Content<unknown>): Promise<DocumentModel[]> {
@@ -16,8 +16,8 @@ class ConversionModule {
 
 	private getConverterBySourceConfig (sourceConfig: SourceConfig): ConverterContract<unknown> {
 		const converterMap: Record<SourceConfig["type"], ConverterContract<unknown>> = {
-			rss: RSSConverterService,
-			manga: MangaConverterService
+			rss: RSSConverterTool,
+			manga: MangaConverterTool
 		}
 
 		return converterMap[sourceConfig.type]

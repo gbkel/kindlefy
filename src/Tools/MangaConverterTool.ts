@@ -13,7 +13,7 @@ import QueueService from "@/Services/QueueService"
 
 import FileUtil from "@/Utils/FileUtil"
 
-class MangaConverterService implements ConverterContract<Manga> {
+class MangaConverterTool implements ConverterContract<Manga> {
 	private readonly calibre = new Calibre()
 	private readonly queue = new QueueService({ concurrency: 5 })
 
@@ -63,4 +63,4 @@ class MangaConverterService implements ConverterContract<Manga> {
 	}
 }
 
-export default new MangaConverterService()
+export default new MangaConverterTool()
