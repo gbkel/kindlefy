@@ -1,4 +1,3 @@
-import axios, { AxiosInstance } from "axios"
 import * as cheerio from "cheerio"
 
 import { Content, ImporterContract } from "@/Protocols/ImporterProtocol"
@@ -9,11 +8,13 @@ import {
 	Manga
 } from "@/Protocols/MangaImporterProtocol"
 
+import HttpService from "@/Services/HttpService"
+
 class MangaImporterTool implements ImporterContract<Manga> {
-	private readonly client: AxiosInstance
+	private readonly httpService: HttpService
 
 	constructor () {
-		this.client = axios.create({
+		this.httpService = new HttpService({
 			baseURL: "http://w12.mangafreak.net"
 		})
 	}
@@ -45,9 +46,7 @@ class MangaImporterTool implements ImporterContract<Manga> {
 	}
 
 	private async searchManga (name: string): Promise<MangaSearchResult> {
-		const result = await this.client.get(`/Search/${name}`)
-
-		const html = result.data as string
+		const html = await this.httpService.toString(`/Search/${name}`)
 
 		const $ = cheerio.load(html)
 
@@ -69,9 +68,7 @@ class MangaImporterTool implements ImporterContract<Manga> {
 	private async searchMangaChapters (mangaPath: string): Promise<MangaChapterSearchResult[]> {
 		const mangaSlug = mangaPath.split("/").pop()
 
-		const result = await this.client.get(mangaPath)
-
-		const html = result.data as string
+		const html = await this.httpService.toString(mangaPath)
 
 		const $ = cheerio.load(html)
 

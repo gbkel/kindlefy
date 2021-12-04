@@ -1,5 +1,3 @@
-import axios from "axios"
-import { Calibre } from "node-calibre"
 import fs from "fs"
 
 import { DocumentModel } from "@/Models/DocumentModel"
@@ -10,17 +8,20 @@ import { Manga } from "@/Protocols/MangaImporterProtocol"
 
 import TempFolderService from "@/Services/TempFolderService"
 import QueueService from "@/Services/QueueService"
+import HttpService from "@/Services/HttpService"
+import EbookGeneratorService from "@/Services/EbookGeneratorService"
 
 import FileUtil from "@/Utils/FileUtil"
 
 class MangaConverterTool implements ConverterContract<Manga> {
-	private readonly calibre = new Calibre()
-	private readonly queue = new QueueService({ concurrency: 5 })
+	private readonly queueService = new QueueService({ concurrency: 5 })
+	private readonly httpService = new HttpService({})
+	private readonly ebookGeneratorService = new EbookGeneratorService()
 
 	async convert (content: Content<Manga>): Promise<DocumentModel[]> {
 		const documents: DocumentModel[] = await Promise.all(
 			content.data.chapters.map(async mangaChapter => (
-				await this.queue.enqueue(async () => {
+				await this.queueService.enqueue(async () => {
 					const fullChapterName = `${content.data.title} - ${mangaChapter.title}`
 
 					const cbzFilePath = await this.URLToCBZ(mangaChapter.pagesFileUrl, fullChapterName)
@@ -44,20 +45,18 @@ class MangaConverterTool implements ConverterContract<Manga> {
 	}
 
 	private async URLToCBZ (url: string, title: string): Promise<string> {
-		const result = await axios.get(url, {
-			responseType: "arraybuffer"
-		})
+		const buffer = await this.httpService.toBuffer(url)
 
 		const cbzFileName = `${title}.cbz`
 		const cbzFilePath = TempFolderService.mountTempPath(cbzFileName)
 
-		await fs.promises.writeFile(cbzFilePath, result.data)
+		await fs.promises.writeFile(cbzFilePath, buffer)
 
 		return cbzFilePath
 	}
 
 	private async CBZToMOBI (cbzFilePath: string): Promise<string> {
-		const mobiFilePath = await this.calibre.ebookConvert(cbzFilePath, "mobi")
+		const mobiFilePath = await this.ebookGeneratorService.generateMOBIFromCBZ(cbzFilePath)
 
 		return mobiFilePath
 	}
