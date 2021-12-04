@@ -13,14 +13,6 @@ class EbookGeneratorService {
 		return filePath
 	}
 
-	// async generateMOBIFromEPUB (epubFilePath: string): Promise<string> {
-	// 	const calibre = new Calibre()
-
-	// 	const mobiFilePath = await calibre.ebookConvert(epubFilePath, "mobi")
-
-	// 	return mobiFilePath
-	// }
-
 	async generateMOBIFromEPUB (epubFilePath: string): Promise<string> {
 		const mobiFilePath = `${epubFilePath}.mobi`
 
@@ -30,12 +22,9 @@ class EbookGeneratorService {
 	}
 
 	async generateMOBIFromCBZ (cbzFilePath: string): Promise<string> {
-		const mobiFilePath = cbzFilePath.replace(".cbz", ".mobi")
+		const mobiFilePath = `${cbzFilePath}.mobi`
 
-		await ProcessCommandService.run("python3 /kcc/kcc-c2e.py", [cbzFilePath], {
-			profile: "KPW",
-			format: "MOBI"
-		})
+		await ProcessCommandService.run("ebook-convert", [cbzFilePath, mobiFilePath])
 
 		return mobiFilePath
 	}

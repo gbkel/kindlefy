@@ -146,6 +146,4 @@ npm run dev
 
 **Obs:**
 
-1. It is needed to have [Calibre](https://calibre-ebook.com/download) installed locally.
-
-2. It is needed to have [Kindle Comic Converter](https://github.com/ciromattia/kcc) installed locally.
+- It is needed to have [Calibre](https://calibre-ebook.com/download) installed locally.
