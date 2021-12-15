@@ -109,19 +109,21 @@ For now we have the following sources available to import contents to kindle *(t
 
 ## 🕋 Features
 
-- [X] Send to Kindle by Gmail
+- [X] Send to Kindle by Gmail.
 
-- [X] Send to Kindle by Outlook
+- [X] Send to Kindle by Outlook.
 
-- [X] Send to Kindle by a generic SMTP Server
+- [X] Send to Kindle by a generic SMTP Server.
 
-- [X] Import Manga
+- [X] Import Manga.
 
-- [X] Import RSS Feed
+- [X] Import RSS Feed.
 
-- [ ] Choosing which collection to put the documents
+- [ ] Choosing which collection to put the documents.
 
-- [ ] Sending more than one document per mail
+- [ ] Sending more than one document per mail.
+
+- [ ] Using an own Docker Image (builded with the Dockerfile inside this repo) to improve action speed.
 
 ## 🔧 Technologies
 
