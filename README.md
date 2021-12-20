@@ -125,6 +125,8 @@ For now we have the following sources available to import contents to kindle *(t
 
 - [ ] Using an own Docker Image (builded with the Dockerfile inside this repo) to improve action speed.
 
+- [ ] Adding support for database to persist sync history and avoid data duplication on kindle (such as using MongoDB, Github Repository, etc.).
+
 ## 🔧 Technologies
 
 - Typescript
