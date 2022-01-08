@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Kindlefy
-        uses: gbkel/kindlefy@v1.2.2
+        uses: gbkel/kindlefy@v1.2.3
         with:
           kindle_email: 'test@kindle.com'
           sender: '[{ "type": "gmail", "email": "test@gmail.com", "password": "password" }]'
@@ -118,6 +118,8 @@ For now we have the following sources available to import contents to kindle *(t
 - [X] Import Manga
 
 - [X] Import RSS Feed
+
+- [X] Import Full Medium RSS Feeds
 
 - [ ] Choosing which collection to put the documents
 

@@ -24,6 +24,14 @@ class HttpService {
 
 		return result.data
 	}
+
+	async toJSON<Result extends Record<string, unknown>>(url: string): Promise<Result> {
+		const result = await this.client.get(url, {
+			responseType: "json"
+		})
+
+		return result.data
+	}
 }
 
 export default HttpService

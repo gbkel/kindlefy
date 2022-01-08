@@ -8,9 +8,11 @@ import {
 
 import ErrorHandlerService from "@/Services/ErrorHandlerService"
 
+import EnvironmentValidation from "@/Validations/EnvironmentValidation"
+
 class NotificationService {
 	async task<Result extends unknown>(title: string, callback: TaskCallback<Result>): Promise<Result> {
-		const isGithubActionContext = Boolean(core.getInput("kindle_email"))
+		const isGithubActionContext = EnvironmentValidation.isGithubActionEnvironment()
 
 		if (isGithubActionContext) {
 			return await this.githubActionTask(title, callback)
