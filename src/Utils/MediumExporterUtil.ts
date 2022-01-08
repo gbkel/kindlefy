@@ -92,7 +92,7 @@ class MediumExporterUtil {
 			const isIframeTag = paragraph.tag.includes("<iframe")
 
 			if (isIframeTag) {
-				html += `<link rel="stylesheet" href=${paragraph?.gist?.stylesheet}></link>`
+				html += `<link rel="stylesheet" href="${paragraph?.gist?.stylesheet}"></link>`
 				html += paragraph.gist.div
 
 				return html

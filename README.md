@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Kindlefy
-        uses: gbkel/kindlefy@v1.2.3
+        uses: gbkel/kindlefy@v1.2.4
         with:
           kindle_email: 'test@kindle.com'
           sender: '[{ "type": "gmail", "email": "test@gmail.com", "password": "password" }]'
