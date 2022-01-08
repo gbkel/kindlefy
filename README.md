@@ -119,7 +119,7 @@ For now we have the following sources available to import contents to kindle *(t
 
 - [X] Import RSS Feed.
 
-- [X] Import Full Medium RSS Feeds
+- [X] Import Full Medium RSS Feeds.
 
 - [ ] Choosing which collection to put the documents.
 
