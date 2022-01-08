@@ -158,7 +158,7 @@ class MediumExporterUtil {
 	private async renderParagraph (paragraph: PostParagraph): Promise<RenderedParagraph> {
 		const renderedParagraph: RenderedParagraph = {
 			text: paragraph.text || "",
-			tag: this.checkType(paragraph.type),
+			tag: this.getTagByParagraphType(paragraph.type),
 			mixtapeMetadata: paragraph.mixtapeMetadata,
 			markups: paragraph.markups,
 			metadata: paragraph.metadata
@@ -170,22 +170,24 @@ class MediumExporterUtil {
 		}
 
 		if (paragraph.type === 8) {
-			paragraph.text = this.safeTagsReplace(paragraph.text)
+			paragraph.text = this.replaceTextTags(paragraph.text)
 		}
 
 		return renderedParagraph
 	}
 
-	private replaceTag (tag: string): string {
-		return this.tagReplaceMap[tag] || tag
+	private replaceTextTags (value: string): string {
+		const textWithReplacedTags = value.replace(/[&<>]/g, tag => {
+			const validTag = this.tagReplaceMap[tag] || tag
+
+			return validTag
+		})
+
+		return textWithReplacedTags
 	}
 
-	private safeTagsReplace (value: string): string {
-		return value.replace(/[&<>]/g, tag => this.replaceTag(tag))
-	}
-
-	private checkType (type: number): string {
-		return this.paragraphTypeTagMap[type]
+	private getTagByParagraphType (paragraphType: number): string {
+		return this.paragraphTypeTagMap[paragraphType]
 	}
 }
 
