@@ -129,6 +129,8 @@ For now we have the following sources available to import contents to kindle *(t
 
 - [ ] Adding support for database to persist sync history and avoid data duplication on kindle (such as using MongoDB, Github Repository, etc.).
 
+- [ ] Adding correct metadata for documents (cover, author and all other missing metadata).
+
 ## 🔧 Technologies
 
 - Typescript
