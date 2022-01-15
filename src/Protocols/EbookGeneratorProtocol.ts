@@ -35,4 +35,9 @@ export type EbookConvertOptions = {
 	 * Disable splitting landscape pages into two pages for comics.
 	 */
 	landscape?: boolean
+	/**
+	 * Sets the info about the ebook authors, usually shown on ebook listing
+	 * on kindle.
+	 */
+	authors?: string
 }

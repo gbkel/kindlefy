@@ -8,6 +8,10 @@ import {
 import ProcessCommandService from "@/Services/ProcessCommandService"
 
 class EbookGeneratorService {
+	private readonly defaultEbookConvertOptions: EbookConvertOptions = {
+		authors: "Kindlefy"
+	}
+
 	async generateEPUB (filePath: string, options: GenerateEPUBOptions): Promise<string> {
 		const epubParser = new EPUBGenerator(options, filePath)
 
@@ -19,7 +23,9 @@ class EbookGeneratorService {
 	async generateMOBIFromEPUB (epubFilePath: string): Promise<string> {
 		const mobiFilePath = `${epubFilePath}.mobi`
 
-		await ProcessCommandService.run("ebook-convert", [epubFilePath, mobiFilePath])
+		await ProcessCommandService.run("ebook-convert", [epubFilePath, mobiFilePath], {
+			...this.defaultEbookConvertOptions
+		})
 
 		return mobiFilePath
 	}
@@ -31,7 +37,8 @@ class EbookGeneratorService {
 			noInlineToc: true,
 			outputProfile: "tablet",
 			right2left: false,
-			landscape: true
+			landscape: true,
+			...this.defaultEbookConvertOptions
 		}
 
 		await ProcessCommandService.run("ebook-convert", [cbzFilePath, mobiFilePath], options)
