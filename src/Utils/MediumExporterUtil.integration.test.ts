@@ -7,5 +7,11 @@ describe("MediumExporterUtil", () => {
 
 			expect(postHTML).toBeTruthy()
 		})
+
+		test("Should throw when trying to retrieve an invalid post in HTML", async () => {
+			const promise = MediumExporterUtil.getPostHTML("https://medium.com/invalid_slug/invalid_post_name")
+
+			await expect(promise).rejects.toThrow()
+		})
 	})
 })

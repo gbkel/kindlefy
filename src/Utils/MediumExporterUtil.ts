@@ -62,13 +62,23 @@ class MediumExporterUtil {
 		 * Matches post urls such as:
 		 * 	- https://something.medium.com/some-post?source=rss
 		 * 	- https://medium.com/some-post?source=rss
-		 *
+		 * 	- https://test.dev.com/some-post?source=rss
 		 */
-		const rawPostUrl = content.match(/https:\/\/([a-zA-Z-]*?)(\.?)medium\.com(.*?)\?source=rss/g)
+		const rawPostUrl = content.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)\?source=rss/g)
 
 		const formattedPostUrl = rawPostUrl?.[0]?.replace("?source=rss", "")
 
 		return formattedPostUrl
+	}
+
+	turnPostUrlIntoPostJsonUrl (postUrl: string): string {
+		const url = new URL(postUrl)
+
+		const postName = url.pathname.split("/").pop()
+
+		const postJsonUrl = `https://medium.com/@/${postName}?format=json`
+
+		return postJsonUrl
 	}
 
 	private turnRenderedParagraphsIntoHTML (paragraphs: RenderedParagraph[]): string {
@@ -104,33 +114,6 @@ class MediumExporterUtil {
 		}, "")
 
 		return html
-	}
-
-	private turnPostUrlIntoPostJsonUrl (postUrl: string): string {
-		const url = new URL(postUrl)
-
-		const params = {
-			slug: "",
-			postName: ""
-		}
-
-		const subdomainSlug = url.hostname.split("medium.com")?.[0]?.replace(".", "")
-
-		if (subdomainSlug) {
-			const [, postName] = url.pathname.split("/")
-
-			params.slug = subdomainSlug
-			params.postName = postName
-		} else {
-			const [, slug, postName] = url.pathname.split("/")
-
-			params.slug = slug
-			params.postName = postName
-		}
-
-		const postJsonUrl = `https://medium.com/@${params.slug}/${params.postName}?format=json`
-
-		return postJsonUrl
 	}
 
 	private turnRawResponseIntoJSON<Response extends unknown>(rawPostResponse: string): Response {

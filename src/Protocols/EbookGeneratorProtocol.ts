@@ -31,4 +31,8 @@ export type EbookConvertOptions = {
 	 * Disable automatically created table of contents.
 	 */
 	noInlineToc?: boolean
+	/**
+	 * Disable splitting landscape pages into two pages for comics.
+	 */
+	landscape?: boolean
 }

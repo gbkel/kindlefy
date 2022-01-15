@@ -1,13 +1,66 @@
 import MediumExporterUtil from "@/Utils/MediumExporterUtil"
 
-export const MEDIUM_SEE_MORE_CONTENT_EXAMPLE = "<div class=\"medium-feed-item\"><p class=\"medium-feed-image\"><a href=\"https://medium.com/@thcerutti/cooktop-componentes-de-software-e-o-princ%C3%ADpio-da-responsabilidade-%C3%BAnica-81c28a1a384a?source=rss------software_engineering-5\"><img src=\"https://cdn-images-1.medium.com/max/930/1*8XQJDE-oism_dzoMPjsuoA.png\" width=\"930\"></a></p><p class=\"medium-feed-snippet\">Meu cooktop bugou. N&#xE3;o, n&#xE3;o estou falando de algum padr&#xE3;o de projeto chamado &#x201C;cooktop&#x201D; (&#x2026;), foi o da minha cozinha mesmo. Bugou bugado.</p><p class=\"medium-feed-link\"><a href=\"https://medium.com/@thcerutti/cooktop-componentes-de-software-e-o-princ%C3%ADpio-da-responsabilidade-%C3%BAnica-81c28a1a384a?source=rss------software_engineering-5\">Continue reading on Medium »</a></p></div>"
+const MOCK_POST_NAME = "some_post"
+const MOCK_NORMAL_POST_URL = `https://medium.com/@test/${MOCK_POST_NAME}`
+const MOCK_SUBDOMAIN_POST_URL = `https://test.medium.com/${MOCK_POST_NAME}`
+const MOCK_CUSTOM_POST_URL = `https://blog.test.dev/${MOCK_POST_NAME}`
+const MOCK_INVALID_POST_URL = `https://<a href='test'>.com/${MOCK_POST_NAME}`
+const MOCK_POST_JSON_URL = `https://medium.com/@/${MOCK_POST_NAME}?format=json`
+
+const buildMockSeeMoreContent = (postUrl: string): string => `<a href="${postUrl}?source=rss">Continue reading on Medium »</a></p></div>`
 
 describe("MediumExporterUtil", () => {
 	describe("getPostUrlFromSeeMoreContent()", () => {
-		test("Should retrieve original post url from see more content", async () => {
-			const postURL = MediumExporterUtil.getPostUrlFromSeeMoreContent(MEDIUM_SEE_MORE_CONTENT_EXAMPLE)
+		test("Should retrieve post url from normal post url", async () => {
+			const normalPostUrlSeeMoreContent = buildMockSeeMoreContent(MOCK_NORMAL_POST_URL)
 
-			expect(postURL).toBeTruthy()
+			const postURL = MediumExporterUtil.getPostUrlFromSeeMoreContent(normalPostUrlSeeMoreContent)
+
+			expect(postURL).toBe(MOCK_NORMAL_POST_URL)
+		})
+
+		test("Should retrieve post url from subdomain post url", async () => {
+			const subdomainPostUrlSeeMoreContent = buildMockSeeMoreContent(MOCK_SUBDOMAIN_POST_URL)
+
+			const postURL = MediumExporterUtil.getPostUrlFromSeeMoreContent(subdomainPostUrlSeeMoreContent)
+
+			expect(postURL).toBe(MOCK_SUBDOMAIN_POST_URL)
+		})
+
+		test("Should retrieve post url from custom post url", async () => {
+			const customPostUrlSeeMoreContent = buildMockSeeMoreContent(MOCK_CUSTOM_POST_URL)
+
+			const postURL = MediumExporterUtil.getPostUrlFromSeeMoreContent(customPostUrlSeeMoreContent)
+
+			expect(postURL).toBe(MOCK_CUSTOM_POST_URL)
+		})
+
+		test("Should not retrieve a post url from an invalid post url", async () => {
+			const invalidPostUrlSeeMoreContent = buildMockSeeMoreContent(MOCK_INVALID_POST_URL)
+
+			const postURL = MediumExporterUtil.getPostUrlFromSeeMoreContent(invalidPostUrlSeeMoreContent)
+
+			expect(postURL).toBeFalsy()
+		})
+	})
+
+	describe("turnPostUrlIntoPostJsonUrl()", () => {
+		test("Should retrieve post json url from normal post url", async () => {
+			const result = MediumExporterUtil.turnPostUrlIntoPostJsonUrl(MOCK_NORMAL_POST_URL)
+
+			expect(result).toBe(MOCK_POST_JSON_URL)
+		})
+
+		test("Should retrieve post json url from subdomain post url", async () => {
+			const result = MediumExporterUtil.turnPostUrlIntoPostJsonUrl(MOCK_SUBDOMAIN_POST_URL)
+
+			expect(result).toBe(MOCK_POST_JSON_URL)
+		})
+
+		test("Should retrieve post json url from custom post url", async () => {
+			const result = MediumExporterUtil.turnPostUrlIntoPostJsonUrl(MOCK_CUSTOM_POST_URL)
+
+			expect(result).toBe(MOCK_POST_JSON_URL)
 		})
 	})
 })

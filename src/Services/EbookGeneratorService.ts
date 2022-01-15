@@ -30,7 +30,8 @@ class EbookGeneratorService {
 		const options: EbookConvertOptions = {
 			noInlineToc: true,
 			outputProfile: "tablet",
-			right2left: true
+			right2left: false,
+			landscape: true
 		}
 
 		await ProcessCommandService.run("ebook-convert", [cbzFilePath, mobiFilePath], options)
