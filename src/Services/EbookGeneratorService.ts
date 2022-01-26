@@ -33,7 +33,7 @@ class EbookGeneratorService {
 	}
 
 	async generateMOBIFromCBZ (cbzFilePath: string): Promise<string> {
-		const mobiFilePath = SanitizationUtil.sanitizeFilename( `${cbzFilePath}.mobi`)
+		const mobiFilePath = SanitizationUtil.sanitizeFilename(`${cbzFilePath}.mobi`)
 
 		const options: EbookConvertOptions = {
 			noInlineToc: true,
