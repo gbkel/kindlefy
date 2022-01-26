@@ -14,7 +14,7 @@ import EbookGeneratorService from "@/Services/EbookGeneratorService"
 import FileUtil from "@/Utils/FileUtil"
 
 class MangaConverterTool implements ConverterContract<Manga> {
-	private readonly queueService = new QueueService({ concurrency: 5 })
+	private readonly queueService = new QueueService({ concurrency: 5, retries: 3, retryDelay: 10000 })
 	private readonly httpService = new HttpService({})
 	private readonly ebookGeneratorService = new EbookGeneratorService()
 
