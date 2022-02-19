@@ -41,8 +41,8 @@ jobs:
           kindle_email: 'test@kindle.com'
           sender: '[{ "type": "gmail", "email": "test@gmail.com", "password": "password" }]'
           sources: '[{ "type": "manga", "name": "One Piece" }, { "type": "rss", "url": "https://dev.to/feed" }]'
-					storage: '[{ "type": "local", "githubAccessToken": ${{ secrets.GITHUB_TOKEN }} }]'
-					no_duplicated_sync: true
+          storage: '[{ "type": "local", "githubAccessToken": ${{ secrets.GITHUB_TOKEN }} }]'
+          no_duplicated_sync: true
 ```
 
 ### Sender
