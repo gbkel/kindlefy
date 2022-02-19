@@ -2,7 +2,7 @@ import github from "@actions/github"
 
 class EnvironmentValidation {
 	get isGithubActionEnvironment (): boolean {
-		console.log(github?.context)
+		console.log(github)
 		return Boolean(github?.context)
 	}
 
