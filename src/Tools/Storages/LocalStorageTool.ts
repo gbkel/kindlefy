@@ -1,4 +1,3 @@
-import * as github from "@actions/github"
 import path from "path"
 
 import {
@@ -10,6 +9,8 @@ import {
 import EnvironmentValidation from "@/Validations/EnvironmentValidation"
 
 import JSONDatabaseService from "@/Services/JSONDatabaseService"
+
+import GithubActionsUtil from "@/Utils/GithubActionsUtil"
 
 import { StorageConfig } from "@/Protocols/SetupInputProtocol"
 
@@ -47,23 +48,20 @@ class LocalStorageTool implements StorageContract {
 		const isThereAnyDocumentToUpdate = Boolean(documents.length)
 
 		if (EnvironmentValidation.isGithubActionEnvironment && isThereAnyDocumentToUpdate) {
-			const octokit = github.getOctokit(this.storageConfig.githubAccessToken)
-
 			const content = await this.JSONDatabaseService.dump()
-			const contentEncoded = content.toString("base64")
 
-			const kindlefyAuth = {
-				name: "Kindlefy",
-				email: "kindlefy@guilherr.me"
-			}
-
-			await octokit.rest.repos.createOrUpdateFileContents({
-				...github.context.repo,
-				path: this.databaseName,
-				message: "feat(kindlefy): update database",
-				content: contentEncoded,
-				committer: kindlefyAuth,
-				author: kindlefyAuth
+			await GithubActionsUtil.updateRepositoryFile({
+				auth: {
+					accessToken: this.storageConfig.githubAccessToken
+				},
+				author: {
+					name: "Kindlefy",
+					email: "kindlefy@guilherr.me"
+				},
+				data: content,
+				where: {
+					path: this.databaseName
+				}
 			})
 		}
 	}
