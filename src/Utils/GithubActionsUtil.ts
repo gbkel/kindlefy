@@ -28,7 +28,7 @@ class GithubActionsUtil {
 
 			await octokit.rest.repos.createOrUpdateFileContents({
 				...enrichedWhere,
-				message: "feat(kindlefy): update database",
+				message: "feat(kindlefy): update file",
 				content: contentEncoded,
 				committer: author,
 				author,
