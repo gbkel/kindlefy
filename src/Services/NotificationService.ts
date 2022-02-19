@@ -12,9 +12,7 @@ import EnvironmentValidation from "@/Validations/EnvironmentValidation"
 
 class NotificationService {
 	async task<Result extends unknown>(title: string, callback: TaskCallback<Result>): Promise<Result> {
-		const isGithubActionContext = EnvironmentValidation.isGithubActionEnvironment()
-
-		if (isGithubActionContext) {
+		if (EnvironmentValidation.isGithubActionEnvironment) {
 			return await this.githubActionTask(title, callback)
 		} else {
 			return await this.CLITask(title, callback)

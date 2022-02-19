@@ -6,14 +6,14 @@ import { NoValidSetupInputFoundException } from "@/Exceptions/SetupInputExceptio
 import { EnabledSyncWithoutStorageConfigException } from "@/Exceptions/EnabledSyncWithoutStorageConfigException"
 
 import ParseUtil from "@/Utils/ParseUtil"
-
+import EnvironmentValidation from "@/Validations/EnvironmentValidation"
 class SetupInputModule {
 	async fetch (): Promise<Config> {
 		let config: Config
 
-		config = this.fetchGithubActionsConfig()
-
-		if (!config) {
+		if (EnvironmentValidation.isGithubActionEnvironment) {
+			config = this.fetchGithubActionsConfig()
+		} else {
 			config = this.fetchEnvConfig()
 		}
 
@@ -43,7 +43,8 @@ class SetupInputModule {
 					noDuplicatedSync: core.getInput("no_duplicated_sync") === "true"
 				}
 			}
-		} catch {
+		} catch (error) {
+			console.log(error)
 			return null
 		}
 	}
@@ -61,7 +62,8 @@ class SetupInputModule {
 					noDuplicatedSync: process.env.NO_DUPLICATED_SYNC === "true"
 				}
 			}
-		} catch {
+		} catch (error) {
+			console.log(error)
 			return null
 		}
 	}

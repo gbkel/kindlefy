@@ -1,11 +1,11 @@
 import github from "@actions/github"
 
 class EnvironmentValidation {
-	isGithubActionEnvironment (): boolean {
+	get isGithubActionEnvironment (): boolean {
 		return Boolean(github?.context)
 	}
 
-	isDevEnvironment (): boolean {
+	get isDevEnvironment (): boolean {
 		return process.env.NODE_ENV === "development"
 	}
 }
