@@ -50,11 +50,11 @@ class App {
 					}
 				}
 
-				await storeModule.commitDocumentSyncChanges()
-
 				task.setOutput(`Successfully sync ${documents.length} documents (${documents.map(document => document.title).join(", ")})`)
 			})
 		}
+
+		await storeModule.commitDocumentSyncChanges()
 
 		await TempFolderService.clean()
 	}
