@@ -6,6 +6,11 @@ import QueueService from "@/Services/QueueService"
 
 class JSONDatabaseService<Model extends unknown> {
 	private static databases: Record<string, Database> = {}
+	/**
+	 * Since there can be multiple instances of this class accessing the same file,
+	 * we control all the actions by using a fifo queue, to make sure there will be
+	 * no concurrent able to cause bugs.
+	 */
 	private static readonly actionFIFOQueue = new QueueService({ concurrency: 1 })
 	private readonly path: string
 
