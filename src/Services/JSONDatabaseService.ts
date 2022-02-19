@@ -73,8 +73,6 @@ class JSONDatabaseService<Model extends unknown> {
 		} catch {
 			JSONDatabaseService.databases[this.path] = {}
 		}
-
-		console.log(JSONDatabaseService.databases[this.path])
 	}
 }
 
