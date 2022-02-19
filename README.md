@@ -115,12 +115,12 @@ In case you want to avoid duplicated sync, you can use a storage to save sync hi
 
 **Local**
 
-It saves the sync history inside the repository this action is currently running on. You need to give Kindlefy a github access token in order to edit the repository, usually when we are using a Github Action, it automatically sets up a variable called GITHUB_TOKEN on the build context that can be used as shown below.
+It saves the sync history inside the repository this action is currently running on. You need to give Kindlefy a github access token in order to edit the repository, usually when we are using a Github Action, it automatically sets up a variable called GITHUB_TOKEN on the build context that can be used as shown in the .yml example in the start of the readme.
 
 ```json
 {
 	"type": "local",
-	"githubAccessToken": "${{ secrets.GITHUB_TOKEN }}" // Default variable from Github Action
+	"githubAccessToken": "github access token"
 }
 ```
 
