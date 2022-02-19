@@ -3,10 +3,13 @@ import * as core from "@actions/core"
 import { Config } from "@/Protocols/SetupInputProtocol"
 
 import { NoValidSetupInputFoundException } from "@/Exceptions/SetupInputException"
-import { EnabledSyncWithoutStorageConfigException } from "@/Exceptions/EnabledSyncWithoutStorageConfigException"
+import { EnabledNoDuplicatedSyncWithoutStorageConfigException } from "@/Exceptions/EnabledNoDuplicatedSyncWithoutStorageConfigException"
 
 import ParseUtil from "@/Utils/ParseUtil"
+
 import EnvironmentValidation from "@/Validations/EnvironmentValidation"
+import ConfigValidation from "@/Validations/ConfigValidation"
+
 class SetupInputModule {
 	async fetch (): Promise<Config> {
 		let config: Config
@@ -17,14 +20,12 @@ class SetupInputModule {
 			config = this.fetchEnvConfig()
 		}
 
-		if (!config) {
+		if (ConfigValidation.noValidSetupInputFound(config)) {
 			throw new NoValidSetupInputFoundException()
 		}
 
-		const enabledSyncWithoutStorageConfig = config.sync?.noDuplicatedSync && !config.storages?.length
-
-		if (enabledSyncWithoutStorageConfig) {
-			throw new EnabledSyncWithoutStorageConfigException()
+		if (ConfigValidation.isNoDuplicatedSyncEnabledWithoutStorageConfig(config)) {
+			throw new EnabledNoDuplicatedSyncWithoutStorageConfigException()
 		}
 
 		return config
