@@ -32,40 +32,30 @@ class SetupInputModule {
 	}
 
 	private fetchGithubActionsConfig (): Config {
-		try {
-			return {
-				kindle: {
-					email: core.getInput("kindle_email")
-				},
-				senders: ParseUtil.safelyParseArray(core.getInput("sender")),
-				sources: ParseUtil.safelyParseArray(core.getInput("sources")),
-				storages: ParseUtil.safelyParseArray(core.getInput("storage")),
-				sync: {
-					noDuplicatedSync: core.getInput("no_duplicated_sync") === "true"
-				}
+		return {
+			kindle: {
+				email: core.getInput("kindle_email")
+			},
+			senders: ParseUtil.safelyParseArray(core.getInput("sender")),
+			sources: ParseUtil.safelyParseArray(core.getInput("sources")),
+			storages: ParseUtil.safelyParseArray(core.getInput("storage")),
+			sync: {
+				noDuplicatedSync: core.getInput("no_duplicated_sync") === "true"
 			}
-		} catch (error) {
-			console.log(error)
-			return null
 		}
 	}
 
 	private fetchEnvConfig (): Config {
-		try {
-			return {
-				kindle: {
-					email: process.env.KINDLE_EMAIL
-				},
-				senders: ParseUtil.safelyParseArray(process.env.SENDER),
-				sources: ParseUtil.safelyParseArray(process.env.SOURCES),
-				storages: ParseUtil.safelyParseArray(process.env.STORAGE),
-				sync: {
-					noDuplicatedSync: process.env.NO_DUPLICATED_SYNC === "true"
-				}
+		return {
+			kindle: {
+				email: process.env.KINDLE_EMAIL
+			},
+			senders: ParseUtil.safelyParseArray(process.env.SENDER),
+			sources: ParseUtil.safelyParseArray(process.env.SOURCES),
+			storages: ParseUtil.safelyParseArray(process.env.STORAGE),
+			sync: {
+				noDuplicatedSync: process.env.NO_DUPLICATED_SYNC === "true"
 			}
-		} catch (error) {
-			console.log(error)
-			return null
 		}
 	}
 }
