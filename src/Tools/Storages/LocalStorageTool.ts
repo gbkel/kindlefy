@@ -35,15 +35,6 @@ class LocalStorageTool implements StorageContract {
 	}
 
 	async saveDocuments (documents: DocumentModelCreationAttributes[]): Promise<void> {
-		const formattedDocuments: Record<string, DocumentModelSavedAttributes> = {}
-
-		documents.forEach(document => {
-			formattedDocuments[document.title] = {
-				...document,
-				createdAt: new Date()
-			}
-		})
-
 		await Promise.all(
 			documents.map(async document => {
 				await this.JSONDatabaseService.set(document.title, {
@@ -53,7 +44,7 @@ class LocalStorageTool implements StorageContract {
 			})
 		)
 
-		const isThereAnyDocumentToUpdate = Boolean(formattedDocuments.length)
+		const isThereAnyDocumentToUpdate = Boolean(documents.length)
 
 		if (EnvironmentValidation.isGithubActionEnvironment && isThereAnyDocumentToUpdate) {
 			const octokit = github.getOctokit(this.storageConfig.githubAccessToken)
