@@ -5,6 +5,8 @@ import { Config } from "@/Protocols/SetupInputProtocol"
 import { NoValidSetupInputFoundException } from "@/Exceptions/SetupInputException"
 import { EnabledSyncWithoutStorageConfigException } from "@/Exceptions/EnabledSyncWithoutStorageConfigException"
 
+import ParseUtil from "@/Utils/ParseUtil"
+
 class SetupInputModule {
 	async fetch (): Promise<Config> {
 		let config: Config
@@ -34,9 +36,9 @@ class SetupInputModule {
 				kindle: {
 					email: core.getInput("kindle_email")
 				},
-				senders: JSON.parse(core.getInput("sender")),
-				sources: JSON.parse(core.getInput("sources")),
-				storages: JSON.parse(core.getInput("storage")),
+				senders: ParseUtil.safelyParseArray(core.getInput("sender")),
+				sources: ParseUtil.safelyParseArray(core.getInput("sources")),
+				storages: ParseUtil.safelyParseArray(core.getInput("storage")),
 				sync: {
 					noDuplicatedSync: core.getInput("no_duplicated_sync") === "true"
 				}
@@ -52,9 +54,9 @@ class SetupInputModule {
 				kindle: {
 					email: process.env.KINDLE_EMAIL
 				},
-				senders: JSON.parse(process.env.SENDER),
-				sources: JSON.parse(process.env.SOURCES),
-				storages: JSON.parse(process.env.STORAGE),
+				senders: ParseUtil.safelyParseArray(process.env.SENDER),
+				sources: ParseUtil.safelyParseArray(process.env.SOURCES),
+				storages: ParseUtil.safelyParseArray(process.env.STORAGE),
 				sync: {
 					noDuplicatedSync: process.env.NO_DUPLICATED_SYNC === "true"
 				}

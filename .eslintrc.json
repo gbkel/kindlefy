@@ -12,6 +12,7 @@
 		"quotes": ["error", "double"],
 		"@typescript-eslint/quotes": ["error", "double"],
 		"@typescript-eslint/consistent-type-definitions": "off",
-		"@typescript-eslint/no-for-in-array": "off"
+		"@typescript-eslint/no-for-in-array": "off",
+		"no-useless-escape": "off"
 	}
 }
