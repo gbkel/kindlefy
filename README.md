@@ -141,7 +141,6 @@ For now we have the following sources available to import contents to kindle *(t
 - Cheerio
 - Nodemailer
 - Calibre
-- Kindle Comic Converter
 
 ## 🚀 Development Environment
 
