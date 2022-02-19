@@ -157,7 +157,6 @@ It saves the sync history inside the repository this action is currently running
 - Cheerio
 - Nodemailer
 - Calibre
-- Kindle Comic Converter
 
 ## 🚀 Development Environment
 

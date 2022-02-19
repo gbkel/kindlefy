@@ -147,12 +147,16 @@ class MediumExporterUtil {
 			metadata: paragraph.metadata
 		}
 
-		if (paragraph.iframe) {
+		const isIframeParagraph = Boolean(paragraph.iframe)
+
+		if (isIframeParagraph) {
 			renderedParagraph.iframe = await this.turnPostIframeIntoIframeContent(paragraph.iframe)
 			renderedParagraph.gist = await this.turnIframeContentIntoGistContent(renderedParagraph.iframe)
 		}
 
-		if (paragraph.type === 8) {
+		const isTextParagraph = paragraph.type === 8
+
+		if (isTextParagraph) {
 			paragraph.text = this.replaceTextTags(paragraph.text)
 		}
 
