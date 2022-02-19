@@ -1,7 +1,7 @@
 import { DocumentModel } from "@/Models/DocumentModel"
 
 import { StorageConfig, SyncConfig } from "@/Protocols/SetupInputProtocol"
-import { StorageContract } from "@/Protocols/StorageProtocol"
+import { DocumentModelCreationAttributes, StorageContract } from "@/Protocols/StorageProtocol"
 
 import LocalStorageTool from "@/Tools/Storages/LocalStorageTool"
 
@@ -33,9 +33,13 @@ class StoreModule {
 
 	async commitDocumentSyncChanges (): Promise<void> {
 		if (this.isAbleToSync) {
-			for (const document of this.documentsToSync) {
-				await this.storage.saveDocument(document)
-			}
+			const formattedDocuments: DocumentModelCreationAttributes[] = this.documentsToSync.map(document => ({
+				filename: document.filename,
+				title: document.title,
+				type: document.type
+			}))
+
+			await this.storage.saveDocuments(formattedDocuments)
 		}
 	}
 
@@ -43,7 +47,7 @@ class StoreModule {
 		const [config] = this.storageConfig
 
 		const storageMap: Record<StorageConfig["type"], StorageContract> = {
-			local: new LocalStorageTool()
+			local: new LocalStorageTool(config)
 		}
 
 		return storageMap[config.type]
