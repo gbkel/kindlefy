@@ -2,7 +2,7 @@ import { DocumentModel } from "@/Models/DocumentModel"
 import { SenderContract } from "@/Protocols/SenderProtocol"
 import { KindleConfig } from "@/Protocols/SetupInputProtocol"
 
-import SMTPSenderTool from "@/Tools/SMTPSenderTool"
+import SMTPSenderTool from "@/Tools/Senders/SMTPSenderTool"
 
 class OutlookSenderTool implements SenderContract {
 	private readonly smtpSenderTool: SMTPSenderTool

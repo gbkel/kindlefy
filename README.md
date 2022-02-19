@@ -41,6 +41,8 @@ jobs:
           kindle_email: 'test@kindle.com'
           sender: '[{ "type": "gmail", "email": "test@gmail.com", "password": "password" }]'
           sources: '[{ "type": "manga", "name": "One Piece" }, { "type": "rss", "url": "https://dev.to/feed" }]'
+					storage: '[{ "type": "local" }]'
+					no_duplicated_sync: true
 ```
 
 ### Sender
@@ -107,6 +109,20 @@ For now we have the following sources available to import contents to kindle *(t
 }
 ```
 
+### Storage
+
+In case you want to avoid duplicated sync, you can use a storage to save sync history. After adding a storage config, you need to set the 'no_duplicated_sync' environment variable to true in order to use it. Currently we have the following storages:
+
+**Local**
+
+It saves the sync history inside the repository this action is currently running on.
+
+```json
+{
+	"type": "local"
+}
+```
+
 ## 🕋 Features
 
 - [X] Send to Kindle by Gmail.
@@ -127,7 +143,7 @@ For now we have the following sources available to import contents to kindle *(t
 
 - [ ] Using an own Docker Image (builded with the Dockerfile inside this repo) to improve action speed.
 
-- [ ] Adding support for database to persist sync history and avoid data duplication on kindle (such as using MongoDB, Github Repository, etc.).
+- [X] Adding support for database to persist sync history and avoid data duplication on kindle (such as using MongoDB, Github Repository, etc.).
 
 - [ ] Adding correct metadata for documents (cover, author and all other missing metadata).
 

@@ -7,6 +7,14 @@ export type SenderConfig = {
 	type: "smtp" | "gmail" | "outlook"
 }
 
+export type SyncConfig = {
+	noDuplicatedSync: boolean
+}
+
+export type StorageConfig = {
+	type: "local"
+}
+
 export type SourceConfig = {
 	url?: string
 	name?: string
@@ -20,6 +28,8 @@ export type KindleConfig = {
 
 export interface Config {
 	kindle: KindleConfig
-	sender: SenderConfig[]
+	senders: SenderConfig[]
 	sources: SourceConfig[]
+	storages: StorageConfig[]
+	sync: SyncConfig
 }

@@ -3,6 +3,7 @@ import * as core from "@actions/core"
 import { Config } from "@/Protocols/SetupInputProtocol"
 
 import { NoValidSetupInputFoundException } from "@/Exceptions/SetupInputException"
+import { EnabledSyncWithoutStorageConfigException } from "@/Exceptions/EnabledSyncWithoutStorageConfigException"
 
 class SetupInputModule {
 	async fetch (): Promise<Config> {
@@ -18,6 +19,12 @@ class SetupInputModule {
 			throw new NoValidSetupInputFoundException()
 		}
 
+		const enabledSyncWithoutStorageConfig = config.sync?.noDuplicatedSync && !config.storages?.length
+
+		if (enabledSyncWithoutStorageConfig) {
+			throw new EnabledSyncWithoutStorageConfigException()
+		}
+
 		return config
 	}
 
@@ -27,8 +34,12 @@ class SetupInputModule {
 				kindle: {
 					email: core.getInput("kindle_email")
 				},
-				sender: JSON.parse(core.getInput("sender")),
-				sources: JSON.parse(core.getInput("sources"))
+				senders: JSON.parse(core.getInput("sender")),
+				sources: JSON.parse(core.getInput("sources")),
+				storages: JSON.parse(core.getInput("storage")),
+				sync: {
+					noDuplicatedSync: core.getInput("no_duplicated_sync") === "true"
+				}
 			}
 		} catch {
 			return null
@@ -41,8 +52,12 @@ class SetupInputModule {
 				kindle: {
 					email: process.env.KINDLE_EMAIL
 				},
-				sender: JSON.parse(process.env.SENDER),
-				sources: JSON.parse(process.env.SOURCES)
+				senders: JSON.parse(process.env.SENDER),
+				sources: JSON.parse(process.env.SOURCES),
+				storages: JSON.parse(process.env.STORAGE),
+				sync: {
+					noDuplicatedSync: process.env.NO_DUPLICATED_SYNC === "true"
+				}
 			}
 		} catch {
 			return null

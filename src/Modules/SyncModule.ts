@@ -4,9 +4,9 @@ import { KindleConfig, SenderConfig } from "@/Protocols/SetupInputProtocol"
 import { SenderContract } from "@/Protocols/SenderProtocol"
 import { SMTPConfig } from "@/Protocols/SMTPSenderProtocol"
 
-import SMTPSenderTool from "@/Tools/SMTPSenderTool"
-import GmailSenderTool from "@/Tools/GmailSenderTool"
-import OutlookSenderTool from "@/Tools/OutlookSenderTool"
+import SMTPSenderTool from "@/Tools/Senders/SMTPSenderTool"
+import GmailSenderTool from "@/Tools/Senders/GmailSenderTool"
+import OutlookSenderTool from "@/Tools/Senders/OutlookSenderTool"
 
 class SyncModule {
 	private readonly senderConfig: SenderConfig[]

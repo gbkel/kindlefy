@@ -1,8 +1,8 @@
 import { Content, ImporterContract } from "@/Protocols/ImporterProtocol"
 import { SourceConfig } from "@/Protocols/SetupInputProtocol"
 
-import RSSImporterTool from "@/Tools/RSSImporterTool"
-import MangaImporterTool from "@/Tools/MangaImporterTool"
+import RSSImporterTool from "@/Tools/Importers/RSSImporterTool"
+import MangaImporterTool from "@/Tools/Importers/MangaImporterTool"
 
 class ImportationModule {
 	async import (sourceConfig: SourceConfig): Promise<Content<unknown>> {

@@ -1,4 +1,4 @@
-import MangaImporterTool from "@/Tools/MangaImporterTool"
+import MangaImporterTool from "@/Tools/Importers/MangaImporterTool"
 
 describe("MangaImporterTool", () => {
 	describe("import()", () => {
