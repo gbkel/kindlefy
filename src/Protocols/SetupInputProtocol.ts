@@ -13,6 +13,7 @@ export type SyncConfig = {
 
 export type StorageConfig = {
 	type: "local"
+	githubAccessToken?: string
 }
 
 export type SourceConfig = {

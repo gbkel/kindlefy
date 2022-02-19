@@ -1,8 +1,12 @@
-import * as core from "@actions/core"
+import github from "@actions/github"
 
 class EnvironmentValidation {
 	isGithubActionEnvironment (): boolean {
-		return Boolean(core.getInput("kindle_email"))
+		return Boolean(github?.context)
+	}
+
+	isDevEnvironment (): boolean {
+		return process.env.NODE_ENV === "development"
 	}
 }
 
