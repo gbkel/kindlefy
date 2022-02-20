@@ -1,4 +1,5 @@
 import * as github from "@actions/github"
+import path from "path"
 
 import { UpdateFileInput } from "@/Protocols/GithubActionsProtocol"
 
@@ -37,6 +38,14 @@ class GithubActionsUtil {
 		} catch (error) {
 			ErrorHandlerService.handle(error)
 		}
+	}
+
+	/**
+	 * This is the path outside the repository that is created inside the Github Action repository
+	 * what means that this path references the Github Action repository root folder.
+	 */
+	get githubActionMainRepositoryPath (): string {
+		return path.resolve(__dirname, "..", "..", "..")
 	}
 }
 

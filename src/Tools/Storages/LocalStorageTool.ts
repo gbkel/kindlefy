@@ -17,11 +17,7 @@ import { StorageConfig } from "@/Protocols/SetupInputProtocol"
 class LocalStorageTool implements StorageContract {
 	private readonly JSONDatabaseService: JSONDatabaseService<DocumentModelSavedAttributes>
 	private readonly databaseName = "kindlefy-local-database.json"
-	/**
-	 * This is the path outside the repository that is created inside the Github Action repository
-	 * what means that this path references the Github Action repository root folder.
-	 */
-	private readonly databasePath = path.resolve(__dirname, "..", "..", "..", "..")
+	private readonly databasePath = GithubActionsUtil.githubActionMainRepositoryPath
 	private readonly storageConfig: StorageConfig
 
 	constructor (storageConfig: StorageConfig) {
