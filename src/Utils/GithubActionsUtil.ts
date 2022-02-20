@@ -41,7 +41,7 @@ class GithubActionsUtil {
 	}
 
 	/**
-	 * This is the path outside the repository that is created inside the Github Action repository
+	 * This is the path outside the kindlefy folder that is created inside the Github Action repository
 	 * what means that this path references the Github Action repository root folder.
 	 */
 	get githubActionMainRepositoryPath (): string {
