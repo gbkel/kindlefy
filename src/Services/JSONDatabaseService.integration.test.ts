@@ -25,7 +25,7 @@ const generateMockData = (count: number): Record<string, MockData> => {
 
 describe("JSONDatabaseService", () => {
 	describe("set()", () => {
-		test("Make sure concurrent changes do not corrupt database", async () => {
+		test("Should not get database corrupted when making concurrent changes", async () => {
 			const mockData = generateMockData(10)
 
 			const databaseName = `json-database-service-integration-test-${crypto.randomUUID()}.json`
