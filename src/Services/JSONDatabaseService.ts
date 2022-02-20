@@ -20,7 +20,7 @@ class JSONDatabaseService<Model extends unknown> {
 
 	async set (key: string, value: Model): Promise<void> {
 		return await JSONDatabaseService.actionFIFOQueue.enqueue(async () => {
-			await this.syncInMemoryDatabaseBYFileDatabaseIfNotAlreadySync()
+			await this.syncInMemoryDatabaseByFileDatabaseIfNotAlreadySync()
 
 			JSONDatabaseService.databases[this.path][key] = value
 
@@ -30,7 +30,7 @@ class JSONDatabaseService<Model extends unknown> {
 
 	async get (key: string): Promise<Model | null> {
 		return await JSONDatabaseService.actionFIFOQueue.enqueue(async () => {
-			await this.syncInMemoryDatabaseBYFileDatabaseIfNotAlreadySync()
+			await this.syncInMemoryDatabaseByFileDatabaseIfNotAlreadySync()
 
 			const data = JSONDatabaseService.databases[this.path][key]
 
@@ -68,7 +68,7 @@ class JSONDatabaseService<Model extends unknown> {
 		await fs.promises.writeFile(this.path, serializedDatabase)
 	}
 
-	private async syncInMemoryDatabaseBYFileDatabaseIfNotAlreadySync (): Promise<void> {
+	private async syncInMemoryDatabaseByFileDatabaseIfNotAlreadySync (): Promise<void> {
 		const isDatabaseSetup = Boolean(JSONDatabaseService.databases[this.path])
 
 		if (isDatabaseSetup) {
