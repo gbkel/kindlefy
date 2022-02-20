@@ -1,3 +1,5 @@
+import path from "path"
+
 import { PackageJSON } from "@/Protocols/AppProtocol"
 
 class AppUtil {
@@ -10,7 +12,9 @@ class AppUtil {
 	}
 
 	private get packageJSON (): PackageJSON {
-		return require("../../package.json")
+		const packageJSONPath = path.resolve(__dirname, "..", "..", "package.json")
+
+		return require(packageJSONPath)
 	}
 }
 
