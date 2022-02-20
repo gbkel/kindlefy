@@ -16,13 +16,13 @@ class StoreModule {
 	}
 
 	async markDocumentSync (document: DocumentModel): Promise<void> {
-		if (this.isAbleToSync) {
+		if (this.isAbleToUseStorage) {
 			this.documentsToSync.push(document)
 		}
 	}
 
 	async isDocumentAlreadySync (document: DocumentModel): Promise<boolean> {
-		if (this.isAbleToSync) {
+		if (this.isAbleToUseStorage) {
 			const existingDocument = await this.storage.retrieveOneDocumentByTitle(document.title)
 
 			return Boolean(existingDocument)
@@ -32,7 +32,7 @@ class StoreModule {
 	}
 
 	async commitDocumentSyncChanges (): Promise<void> {
-		if (this.isAbleToSync) {
+		if (this.isAbleToUseStorage) {
 			const formattedDocuments: DocumentModelCreationAttributes[] = this.documentsToSync.map(document => ({
 				filename: document.filename,
 				title: document.title,
@@ -53,7 +53,7 @@ class StoreModule {
 		return storageMap[config.type]
 	}
 
-	private get isAbleToSync (): boolean {
+	private get isAbleToUseStorage (): boolean {
 		return this.syncConfig?.noDuplicatedSync
 	}
 }
