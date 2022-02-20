@@ -23,15 +23,27 @@ const generateMockData = (count: number): Record<string, MockData> => {
 	return mockData
 }
 
+const makeJSONDatabaseService = async (): Promise<JSONDatabaseService<MockData>> => {
+	await TempFolderService.generate()
+
+	const databaseName = `json-database-service-integration-test-${crypto.randomUUID()}.json`
+	const databaseFullPath = TempFolderService.mountTempPath(databaseName)
+
+	const jsonDatabaseService = new JSONDatabaseService<MockData>(databaseFullPath)
+
+	return jsonDatabaseService
+}
+
 describe("JSONDatabaseService", () => {
+	beforeAll(async () => {
+
+	})
+
 	describe("set()", () => {
 		test("Should not get database corrupted when making concurrent changes", async () => {
 			const mockData = generateMockData(10)
 
-			const databaseName = `json-database-service-integration-test-${crypto.randomUUID()}.json`
-			const databaseFullPath = TempFolderService.mountTempPath(databaseName)
-
-			const jsonDatabaseService = new JSONDatabaseService<MockData>(databaseFullPath)
+			const jsonDatabaseService = await makeJSONDatabaseService()
 
 			await Promise.all(
 				Object.values(mockData).map(async data => (
