@@ -35,10 +35,6 @@ const makeJSONDatabaseService = async (): Promise<JSONDatabaseService<MockData>>
 }
 
 describe("JSONDatabaseService", () => {
-	beforeAll(async () => {
-
-	})
-
 	describe("set()", () => {
 		test("Should not get database corrupted when making concurrent changes", async () => {
 			const mockData = generateMockData(10)
