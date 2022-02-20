@@ -69,9 +69,9 @@ class JSONDatabaseService<Model extends unknown> {
 	}
 
 	private async syncInMemoryDatabaseByFileDatabaseIfNotAlreadySync (): Promise<void> {
-		const isDatabaseSetup = Boolean(JSONDatabaseService.databases[this.path])
+		const isDatabaseReady = Boolean(JSONDatabaseService.databases[this.path])
 
-		if (isDatabaseSetup) {
+		if (isDatabaseReady) {
 			return
 		}
 
