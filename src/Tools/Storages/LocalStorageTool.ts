@@ -45,9 +45,7 @@ class LocalStorageTool implements StorageContract {
 			})
 		)
 
-		const isThereAnyDocumentToUpdate = Boolean(documents.length)
-
-		if (EnvironmentValidation.isGithubActionEnvironment && isThereAnyDocumentToUpdate) {
+		if (EnvironmentValidation.isGithubActionEnvironment) {
 			const content = await this.JSONDatabaseService.dumpFileDatabaseToBuffer()
 
 			await GithubActionsUtil.updateRepositoryFile({

@@ -8,7 +8,7 @@ import LocalStorageTool from "@/Tools/Storages/LocalStorageTool"
 class StoreModule {
 	private readonly storageConfig: StorageConfig[]
 	private readonly syncConfig: SyncConfig
-	private readonly documentsToSync: DocumentModel[] = []
+	private documentsToSync: DocumentModel[] = []
 
 	constructor (storageConfig: StorageConfig[], syncConfig: SyncConfig) {
 		this.storageConfig = storageConfig
@@ -32,7 +32,9 @@ class StoreModule {
 	}
 
 	async commitDocumentSyncChanges (): Promise<void> {
-		if (this.isAbleToUseStorage) {
+		const isThereAnyChangedDocument = Boolean(this.documentsToSync.length)
+
+		if (this.isAbleToUseStorage && isThereAnyChangedDocument) {
 			const formattedDocuments: DocumentModelCreationAttributes[] = this.documentsToSync.map(document => ({
 				filename: document.filename,
 				title: document.title,
@@ -40,6 +42,8 @@ class StoreModule {
 			}))
 
 			await this.storage.saveDocuments(formattedDocuments)
+
+			this.documentsToSync = []
 		}
 	}
 
