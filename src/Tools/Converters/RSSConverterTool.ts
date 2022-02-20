@@ -10,13 +10,10 @@ import { SourceConfig } from "@/Protocols/SetupInputProtocol"
 import TempFolderService from "@/Services/TempFolderService"
 import ParserService from "@/Services/ParserService"
 import EbookGeneratorService from "@/Services/EbookGeneratorService"
-import ErrorHandlerService from "@/Services/ErrorHandlerService"
+import RSSContentEnricherService from "@/Services/RSSContentEnricherService"
 
 import FileUtil from "@/Utils/FileUtil"
 import DateUtil from "@/Utils/DateUtil"
-import MediumExporterUtil from "@/Utils/MediumExporterUtil"
-
-import SourceValidation from "@/Validations/SourceValidation"
 
 class RSSConverterTool implements ConverterContract<Buffer> {
 	private readonly parserService = new ParserService()
@@ -55,11 +52,7 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 					data: item.content
 				}
 
-				const isMediumContent = SourceValidation.isMediumRSSSource(sourceConfig)
-
-				if (isMediumContent) {
-					content.data = await this.retrieveFullMediumContentData(content.data)
-				}
+				content.data = await RSSContentEnricherService.enrich(sourceConfig, content.data)
 
 				return content
 			})
@@ -89,27 +82,6 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 		const mobiFilePath = await this.ebookGeneratorService.generateMOBIFromEPUB(epubFilePath)
 
 		return mobiFilePath
-	}
-
-	/**
-	 * Medium RSS usually returns only the initial part of the post and adds a button
-	 * to check more data on their website. Being minded about that, we use a workaround
-	 * to retrieve the full post in HTML to turn it into EPUB later.
-	 */
-	private async retrieveFullMediumContentData (data: string): Promise<string> {
-		let mediumEpubData = data
-
-		const contentUrl = MediumExporterUtil.getPostUrlFromSeeMoreContent(data)
-
-		if (contentUrl) {
-			try {
-				mediumEpubData = await MediumExporterUtil.getPostHTML(contentUrl)
-			} catch (error) {
-				ErrorHandlerService.handle(error)
-			}
-		}
-
-		return mediumEpubData
 	}
 }
 

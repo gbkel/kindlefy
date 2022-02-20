@@ -1,6 +1,4 @@
-export type PostIFrame = {
-	mediaResourceId: string
-}
+export type PostIFrame = IFrameJSONResponse["value"]
 
 export type PostParagraphMarkup = {
 	type: number

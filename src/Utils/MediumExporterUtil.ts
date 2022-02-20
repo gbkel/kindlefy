@@ -100,10 +100,11 @@ class MediumExporterUtil {
 			}
 
 			const isIframeTag = paragraph.tag.includes("<iframe")
+			const isThereAnyGistData = Boolean(paragraph.gist)
 
-			if (isIframeTag) {
+			if (isIframeTag && isThereAnyGistData) {
 				html += `<link rel="stylesheet" href="${paragraph?.gist?.stylesheet}"></link>`
-				html += paragraph.gist.div
+				html += paragraph.gist?.div
 
 				return html
 			}
@@ -151,7 +152,12 @@ class MediumExporterUtil {
 
 		if (isIframeParagraph) {
 			renderedParagraph.iframe = await this.turnPostIframeIntoIframeContent(paragraph.iframe)
-			renderedParagraph.gist = await this.turnIframeContentIntoGistContent(renderedParagraph.iframe)
+
+			const isGistIframeParagraph = Boolean(renderedParagraph.iframe.gist)
+
+			if (isGistIframeParagraph) {
+				renderedParagraph.gist = await this.turnIframeContentIntoGistContent(renderedParagraph.iframe)
+			}
 		}
 
 		const isTextParagraph = paragraph.type === 8

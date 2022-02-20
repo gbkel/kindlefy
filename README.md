@@ -138,15 +138,13 @@ It saves the sync history inside the repository this action is currently running
 
 - [X] Import Full Medium RSS Feeds.
 
+- [X] Use a database to persist sync history and avoid data duplication on kindle (such as using MongoDB, Github Repository, etc).
+
 - [ ] Choosing which collection to put the documents.
 
 - [ ] Sending more than one document per mail.
 
 - [ ] Using an own Docker Image (builded with the Dockerfile inside this repo) to improve action speed.
-
-- [X] Adding support for database to persist sync history and avoid data duplication on kindle (such as using MongoDB, Github Repository, etc.).
-
-- [ ] Adding correct metadata for documents (cover, author and all other missing metadata).
 
 ## 🔧 Technologies
 
