@@ -22,8 +22,6 @@ class JSONDatabaseService<Model extends unknown> {
 		return await JSONDatabaseService.actionFIFOQueue.enqueue(async () => {
 			await this.syncInMemoryDatabaseByFileDatabaseIfNotAlreadySync()
 
-			console.log(JSONDatabaseService.databases[this.path])
-
 			JSONDatabaseService.databases[this.path][key] = value
 
 			await this.refreshFileDatabaseFromInMemoryDatabase()
