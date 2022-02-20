@@ -1,14 +1,13 @@
 name: Test Kindlefy
 
 on:
-  push:
-    branches:
-      - master
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Start Kindlefy Demo
+    name: Test Kindlefy
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -18,10 +17,3 @@ jobs:
 
       - name: Run Kindlefy Integration and Unit tests
         run: npm run test:ci
-
-      - name: Run Kindlefy Github Action
-        uses: ./
-        with:
-          kindle_email: 'demo@kindle.com'
-          sender: '[]'
-          sources: '[{ "type": "manga", "name": "One Piece" }, { "type": "rss", "url": "https://dev.to/feed" }]'
