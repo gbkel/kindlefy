@@ -20,17 +20,17 @@ class JSONDatabaseService<Model extends unknown> {
 
 	async set (key: string, value: Model): Promise<void> {
 		return await JSONDatabaseService.actionFIFOQueue.enqueue(async () => {
-			await this.setupDatabase()
+			await this.syncInMemoryDatabaseBYFileDatabaseIfNotAlreadySync()
 
 			JSONDatabaseService.databases[this.path][key] = value
 
-			await this.refreshDatabase()
+			await this.refreshFileDatabaseFromInMemoryDatabase()
 		})
 	}
 
 	async get (key: string): Promise<Model | null> {
 		return await JSONDatabaseService.actionFIFOQueue.enqueue(async () => {
-			await this.setupDatabase()
+			await this.syncInMemoryDatabaseBYFileDatabaseIfNotAlreadySync()
 
 			const data = JSONDatabaseService.databases[this.path][key]
 
@@ -42,10 +42,16 @@ class JSONDatabaseService<Model extends unknown> {
 		})
 	}
 
-	async dump (): Promise<Buffer> {
-		const database = await fs.promises.readFile(this.path)
+	async dumpFileDatabaseToBuffer (): Promise<Buffer> {
+		const databaseBuffer = await fs.promises.readFile(this.path)
 
-		return database
+		return databaseBuffer
+	}
+
+	async dumpFileDatabaseToDeserialized (): Promise<Database> {
+		const serializedDatabase = await fs.promises.readFile(this.path, { encoding: "utf-8" })
+
+		return this.deserialize<Database>(serializedDatabase)
 	}
 
 	private serialize<Data extends unknown>(data: Data): string {
@@ -56,25 +62,25 @@ class JSONDatabaseService<Model extends unknown> {
 		return JSON.parse(serializedData)
 	}
 
-	private async refreshDatabase (): Promise<void> {
+	private async refreshFileDatabaseFromInMemoryDatabase (): Promise<void> {
 		const serializedDatabase = this.serialize(JSONDatabaseService.databases[this.path])
 
 		await fs.promises.writeFile(this.path, serializedDatabase)
 	}
 
-	private async setupDatabase (): Promise<void> {
+	private async syncInMemoryDatabaseBYFileDatabaseIfNotAlreadySync (): Promise<void> {
 		const isDatabaseSetup = Boolean(JSONDatabaseService.databases[this.path])
 
 		if (isDatabaseSetup) {
 			return
 		}
 
-		try {
-			const serializedDatabase = await fs.promises.readFile(this.path, {
-				encoding: "utf-8"
-			})
+		await this.syncInMemoryDatabaseByFileDatabase()
+	}
 
-			JSONDatabaseService.databases[this.path] = this.deserialize<Database>(serializedDatabase)
+	private async syncInMemoryDatabaseByFileDatabase (): Promise<void> {
+		try {
+			JSONDatabaseService.databases[this.path] = await this.dumpFileDatabaseToDeserialized()
 		} catch {
 			JSONDatabaseService.databases[this.path] = {}
 		}
