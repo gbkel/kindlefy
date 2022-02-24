@@ -53,8 +53,6 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 
 		const parsedRSS = await this.parserService.parseRSS(rssString)
 
-		const turnPostsIntoMultipleDocuments = Boolean(sourceConfig?.splitRSSPosts)
-
 		parsedRSS.items = DataManipulationUtil.manipulateArray(parsedRSS.items, {
 			order: {
 				property: "publishDate",
@@ -78,6 +76,8 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 		)
 
 		let EPUBConfigs: GenerateEPUBOptions[] = []
+
+		const turnPostsIntoMultipleDocuments = Boolean(sourceConfig?.splitRSSPosts)
 
 		if (turnPostsIntoMultipleDocuments) {
 			EPUBConfigs = content.map(item => ({

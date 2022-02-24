@@ -2,7 +2,7 @@ import MangaImporterTool from "@/Tools/Importers/MangaImporterTool"
 
 describe("MangaImporterTool", () => {
 	describe("import()", () => {
-		test("Should all 'One Piece' manga chapters with valid data", async () => {
+		test("Should retrieve all 'One Piece' manga chapters with valid data", async () => {
 			const manga = await MangaImporterTool.import({ type: "manga", name: "One Piece" })
 
 			expect(manga.data).toBeTruthy()
