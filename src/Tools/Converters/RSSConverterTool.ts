@@ -88,7 +88,7 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 				author: item.author,
 				publisher: parsedRSS.creator,
 				cover: parsedRSS.imageUrl,
-				content
+				content: [item]
 			}))
 
 			EPUBConfigs = DataManipulationUtil.manipulateArray(EPUBConfigs, { limit: sourceConfig.count })
