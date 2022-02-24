@@ -30,5 +30,15 @@ describe("DataManipulationUtil", () => {
 			expect(manipulatedData[1].id).toBe(8)
 			expect(manipulatedData[2].id).toBe(7)
 		})
+
+		test("Should have correct length when using 'limiting'", async () => {
+			const mockData = generateMockData(10)
+
+			const manipulatedData = DataManipulationUtil.manipulateArray(mockData, {
+				limit: 3
+			})
+
+			expect(manipulatedData.length).toBe(3)
+		})
 	})
 })
