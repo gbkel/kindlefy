@@ -59,12 +59,9 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 			order: {
 				property: "publishDate",
 				type: sourceConfig?.order ?? "desc"
-			}
+			},
+			limit: sourceConfig.count
 		})
-
-		if (!turnPostsIntoMultipleDocuments) {
-			parsedRSS.items = DataManipulationUtil.manipulateArray(parsedRSS.items, { limit: sourceConfig.count })
-		}
 
 		const content: EpubContent[] = await Promise.all(
 			parsedRSS.items?.map(async item => {
@@ -90,8 +87,6 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 				cover: parsedRSS.imageUrl,
 				content: [item]
 			}))
-
-			EPUBConfigs = DataManipulationUtil.manipulateArray(EPUBConfigs, { limit: sourceConfig.count })
 		} else {
 			EPUBConfigs = [{
 				title: `${parsedRSS.title} ${DateUtil.todayFormattedDate}`,
