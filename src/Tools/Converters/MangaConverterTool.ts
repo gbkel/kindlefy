@@ -12,6 +12,7 @@ import HttpService from "@/Services/HttpService"
 import EbookGeneratorService from "@/Services/EbookGeneratorService"
 
 import FileUtil from "@/Utils/FileUtil"
+import DataManipulationUtil from "@/Utils/DataManipulationUtil"
 
 class MangaConverterTool implements ConverterContract<Manga> {
 	private readonly queueService = new QueueService({ concurrency: 5, retries: 3, retryDelay: 10000 })
@@ -19,6 +20,11 @@ class MangaConverterTool implements ConverterContract<Manga> {
 	private readonly ebookGeneratorService = new EbookGeneratorService()
 
 	async convert (content: Content<Manga>): Promise<DocumentModel[]> {
+		content.data.chapters = DataManipulationUtil.manipulateArray(content.data.chapters, {
+			limit: content.sourceConfig.count ?? 1,
+			order: { property: "no", type: content.sourceConfig?.order ?? "desc" }
+		})
+
 		const documents: DocumentModel[] = await Promise.all(
 			content.data.chapters.map(async mangaChapter => (
 				await this.queueService.enqueue(async () => {

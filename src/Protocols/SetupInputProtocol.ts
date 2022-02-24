@@ -1,3 +1,5 @@
+import { Ordering } from "@/Protocols/DataManipulationProtocol"
+
 export type SenderConfig = {
 	email: string
 	password?: string
@@ -20,6 +22,8 @@ export type SourceConfig = {
 	url?: string
 	name?: string
 	count?: number
+	order?: Ordering
+	splitRSSPosts?: boolean
 	type: "rss" | "manga"
 }
 

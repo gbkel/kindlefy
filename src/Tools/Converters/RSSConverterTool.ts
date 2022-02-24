@@ -11,38 +11,60 @@ import TempFolderService from "@/Services/TempFolderService"
 import ParserService from "@/Services/ParserService"
 import EbookGeneratorService from "@/Services/EbookGeneratorService"
 import RSSContentEnricherService from "@/Services/RSSContentEnricherService"
+import QueueService from "@/Services/QueueService"
 
 import FileUtil from "@/Utils/FileUtil"
 import DateUtil from "@/Utils/DateUtil"
+import DataManipulationUtil from "@/Utils/DataManipulationUtil"
 
 class RSSConverterTool implements ConverterContract<Buffer> {
+	private readonly queueService = new QueueService({ concurrency: 10 })
 	private readonly parserService = new ParserService()
 	private readonly ebookGeneratorService = new EbookGeneratorService()
 
 	async convert (content: Content<Buffer>): Promise<DocumentModel[]> {
-		const EPUBConfig = await this.RSSToEPUBConfig(content.data, content.sourceConfig)
+		const EPUBConfigs = await this.RSSToEPUBConfig(content.data, content.sourceConfig)
 
-		EPUBConfig.title = `${EPUBConfig.title} ${DateUtil.todayFormattedDate}`
+		const documents: DocumentModel[] = await Promise.all(
+			EPUBConfigs.map(async EPUBConfig => (
+				await this.queueService.enqueue(async () => {
+					const epubFilePath = await this.EPUBConfigToEPUB(EPUBConfig)
+					const mobiFilePath = await this.EPUBToMOBI(epubFilePath)
 
-		const epubFilePath = await this.EPUBConfigToEPUB(EPUBConfig)
-		const mobiFilePath = await this.EPUBToMOBI(epubFilePath)
+					const { filename } = FileUtil.parseFilePath(mobiFilePath)
 
-		const { filename } = FileUtil.parseFilePath(mobiFilePath)
+					const mobiData = fs.createReadStream(mobiFilePath)
 
-		const mobiData = fs.createReadStream(mobiFilePath)
+					return {
+						title: EPUBConfig.title,
+						filename,
+						data: mobiData,
+						type: content.sourceConfig.type
+					}
+				})
+			))
+		)
 
-		return [{
-			title: EPUBConfig.title,
-			filename,
-			data: mobiData,
-			type: content.sourceConfig.type
-		}]
+		return documents
 	}
 
-	private async RSSToEPUBConfig (rssBuffer: Buffer, sourceConfig: SourceConfig): Promise<GenerateEPUBOptions> {
+	private async RSSToEPUBConfig (rssBuffer: Buffer, sourceConfig: SourceConfig): Promise<GenerateEPUBOptions[]> {
 		const rssString = rssBuffer.toString()
 
 		const parsedRSS = await this.parserService.parseRSS(rssString)
+
+		const turnPostsIntoMultipleDocuments = Boolean(sourceConfig?.splitRSSPosts)
+
+		parsedRSS.items = DataManipulationUtil.manipulateArray(parsedRSS.items, {
+			order: {
+				property: "publishDate",
+				type: sourceConfig?.order ?? "desc"
+			}
+		})
+
+		if (!turnPostsIntoMultipleDocuments) {
+			parsedRSS.items = DataManipulationUtil.manipulateArray(parsedRSS.items, { limit: sourceConfig.count })
+		}
 
 		const content: EpubContent[] = await Promise.all(
 			parsedRSS.items?.map(async item => {
@@ -58,15 +80,29 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 			})
 		)
 
-		const EPUBConfig: GenerateEPUBOptions = {
-			title: parsedRSS.title,
-			author: parsedRSS.author,
-			publisher: parsedRSS.creator,
-			cover: parsedRSS.imageUrl,
-			content
+		let EPUBConfigs: GenerateEPUBOptions[] = []
+
+		if (turnPostsIntoMultipleDocuments) {
+			EPUBConfigs = content.map(item => ({
+				title: item.title,
+				author: item.author,
+				publisher: parsedRSS.creator,
+				cover: parsedRSS.imageUrl,
+				content
+			}))
+
+			EPUBConfigs = DataManipulationUtil.manipulateArray(EPUBConfigs, { limit: sourceConfig.count })
+		} else {
+			EPUBConfigs = [{
+				title: `${parsedRSS.title} ${DateUtil.todayFormattedDate}`,
+				author: parsedRSS.author,
+				publisher: parsedRSS.creator,
+				cover: parsedRSS.imageUrl,
+				content
+			}]
 		}
 
-		return EPUBConfig
+		return EPUBConfigs
 	}
 
 	private async EPUBConfigToEPUB (EPUBConfig: GenerateEPUBOptions): Promise<string> {

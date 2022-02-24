@@ -17,7 +17,8 @@ class ParserService {
 			items: rawParsedRSS?.items?.map(item => ({
 				title: item?.title,
 				creator: item?.creator,
-				content: item?.content
+				content: item?.content,
+				publishDate: item?.pubDate
 			}))
 		}
 

@@ -88,24 +88,47 @@ In order to use Gmail, you need to [Disable Unlock Captcha](https://accounts.goo
 
 ### Source
 
+All the sources has some basic options to customize it during import. You are able to see these options below:
+
+```json
+{
+	/**
+	 * Documents order. This value can be "desc" or "asc".
+	 */
+	"order": "desc",
+	/**
+	 * Amount of documents to be sync.
+	 */
+	"count": 1
+}
+```
+
 For now we have the following sources available to import contents to kindle *(the contents usually come in descending creation order)*:
 
 **Manga**
 
+The manga source by default sets ```count: 1``` and ```order: desc``` to retrieve the last most recent chapter.
+
 ```json
 {
 	"type": "manga",
-	"name": "some manga name",
-	"count": 1 // Most recent chapters count
+	"name": "some manga name"
 }
 ```
 
 **RSS**
 
+The RSS source by default sets ```order: desc``` to return all posts in publish date descending order.
+
 ```json
 {
 	"type": "rss",
-	"url": "url"
+	"url": "url",
+	/**
+	 * Set to true if you want every post to be
+	 * a new document inside your kindle.
+	 */
+	"splitRSSPosts": false
 }
 ```
 

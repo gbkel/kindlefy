@@ -22,12 +22,6 @@ class MangaImporterTool implements ImporterContract<Manga> {
 	async import (sourceConfig: SourceConfig): Promise<Content<Manga>> {
 		const manga = await this.getManga(sourceConfig.name)
 
-		const chaptersCount = sourceConfig.count ?? 1
-
-		manga.chapters = manga.chapters
-			.sort((a, b) => b.no - a.no)
-			.slice(0, chaptersCount)
-
 		return {
 			data: manga,
 			sourceConfig
