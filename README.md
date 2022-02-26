@@ -114,7 +114,7 @@ The manga source by default sets ```count: 1``` and ```order: desc``` to retriev
 
 **RSS**
 
-The RSS source by default sets ```order: desc``` to return all posts in publish date descending order.
+The RSS source by default sets ```order: desc``` and ```splitRSSPosts: false``` to return all posts in publish date descending order.
 
 ```json
 {
