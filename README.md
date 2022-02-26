@@ -92,13 +92,9 @@ All the sources has some basic options to customize it during import. You are ab
 
 ```json
 {
-	/**
-	 * Documents order. This value can be "desc" or "asc".
-	 */
+	// Documents order. This value can be "desc" or "asc".
 	"order": "desc",
-	/**
-	 * Amount of documents to be sync.
-	 */
+	// Amount of documents to be sync.
 	"count": 1
 }
 ```
@@ -124,10 +120,7 @@ The RSS source by default sets ```order: desc``` to return all posts in publish 
 {
 	"type": "rss",
 	"url": "url",
-	/**
-	 * Set to true if you want every post to be
-	 * a new document inside your kindle.
-	 */
+	// Set to true if you want every post to be a new document inside your kindle.
 	"splitRSSPosts": false
 }
 ```
