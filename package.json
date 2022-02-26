@@ -1,6 +1,6 @@
 {
   "name": "kindlefy",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "Send diverse contents to your Kindle",
   "main": "dist/index.js",
   "scripts": {
