@@ -163,6 +163,8 @@ It saves the sync history inside the repository this action is currently running
 
 - [X] Use a database to persist sync history and avoid data duplication on kindle (such as using MongoDB, Github Repository, etc).
 
+- [X] Turn every rss post into a single document inside Kindle.
+
 - [ ] Choosing which collection to put the documents.
 
 - [ ] Sending more than one document per mail.
