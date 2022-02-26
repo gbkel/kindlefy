@@ -23,6 +23,9 @@ export type SourceConfig = {
 	name?: string
 	count?: number
 	order?: Ordering
+	/**
+	 * Every RSS post will be a new document inside your kindle.
+	 */
 	splitRSSPosts?: boolean
 	type: "rss" | "manga"
 }

@@ -16,6 +16,7 @@ import QueueService from "@/Services/QueueService"
 import FileUtil from "@/Utils/FileUtil"
 import DateUtil from "@/Utils/DateUtil"
 import DataManipulationUtil from "@/Utils/DataManipulationUtil"
+import { ParsedRSS } from "@/Protocols/ParserProtocol"
 
 class RSSConverterTool implements ConverterContract<Buffer> {
 	private readonly queueService = new QueueService({ concurrency: 10 })
@@ -29,7 +30,7 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 			EPUBConfigs.map(async EPUBConfig => (
 				await this.queueService.enqueue(async () => {
 					const epubFilePath = await this.EPUBConfigToEPUB(EPUBConfig)
-					const mobiFilePath = await this.EPUBToMOBI(epubFilePath)
+					const mobiFilePath = await this.EPUBToMOBI(epubFilePath, content.sourceConfig)
 
 					const { filename } = FileUtil.parseFilePath(mobiFilePath)
 
@@ -53,13 +54,7 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 
 		const parsedRSS = await this.parserService.parseRSS(rssString)
 
-		parsedRSS.items = DataManipulationUtil.manipulateArray(parsedRSS.items, {
-			order: {
-				property: "publishDate",
-				type: sourceConfig?.order ?? "desc"
-			},
-			limit: sourceConfig.count
-		})
+		parsedRSS.items = this.applySourceConfigDataManipulation(parsedRSS.items, sourceConfig)
 
 		const content: EpubContent[] = await Promise.all(
 			parsedRSS.items?.map(async item => {
@@ -69,7 +64,7 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 					data: item.content
 				}
 
-				content.data = await RSSContentEnricherService.enrich(sourceConfig, content.data)
+				content.data = await RSSContentEnricherService.enrich(sourceConfig, item)
 
 				return content
 			})
@@ -77,11 +72,9 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 
 		let EPUBConfigs: GenerateEPUBOptions[] = []
 
-		const turnPostsIntoMultipleDocuments = Boolean(sourceConfig?.splitRSSPosts)
-
-		if (turnPostsIntoMultipleDocuments) {
+		if (this.isSinglePostPerDocumentConfig(sourceConfig)) {
 			EPUBConfigs = content.map(item => ({
-				title: item.title,
+				title: `${parsedRSS.title} - ${item.title}`,
 				author: item.author,
 				publisher: parsedRSS.creator,
 				cover: parsedRSS.imageUrl,
@@ -109,10 +102,26 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 		return epubFilePath
 	}
 
-	private async EPUBToMOBI (epubFilePath: string): Promise<string> {
-		const mobiFilePath = await this.ebookGeneratorService.generateMOBIFromEPUB(epubFilePath)
+	private async EPUBToMOBI (epubFilePath: string, sourceConfig: SourceConfig): Promise<string> {
+		const mobiFilePath = await this.ebookGeneratorService.generateMOBIFromEPUB(epubFilePath, {
+			noInlineToc: this.isSinglePostPerDocumentConfig(sourceConfig)
+		})
 
 		return mobiFilePath
+	}
+
+	private isSinglePostPerDocumentConfig (sourceConfig: SourceConfig): boolean {
+		return Boolean(sourceConfig?.splitRSSPosts)
+	}
+
+	private applySourceConfigDataManipulation (data: ParsedRSS["items"], sourceConfig: SourceConfig): ParsedRSS["items"] {
+		return DataManipulationUtil.manipulateArray(data, {
+			order: {
+				property: "publishDate",
+				type: sourceConfig?.order ?? "desc"
+			},
+			limit: sourceConfig.count
+		})
 	}
 }
 

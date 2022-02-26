@@ -18,7 +18,8 @@ class ParserService {
 				title: item?.title,
 				creator: item?.creator,
 				content: item?.content,
-				publishDate: item?.pubDate
+				publishDate: item?.pubDate,
+				rawData: item
 			}))
 		}
 

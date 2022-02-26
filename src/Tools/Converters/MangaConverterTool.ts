@@ -5,6 +5,7 @@ import { DocumentModel } from "@/Models/DocumentModel"
 import { ConverterContract } from "@/Protocols/ConverterProtocol"
 import { Content } from "@/Protocols/ImporterProtocol"
 import { Manga } from "@/Protocols/MangaImporterProtocol"
+import { SourceConfig } from "@/Protocols/SetupInputProtocol"
 
 import TempFolderService from "@/Services/TempFolderService"
 import QueueService from "@/Services/QueueService"
@@ -20,10 +21,7 @@ class MangaConverterTool implements ConverterContract<Manga> {
 	private readonly ebookGeneratorService = new EbookGeneratorService()
 
 	async convert (content: Content<Manga>): Promise<DocumentModel[]> {
-		content.data.chapters = DataManipulationUtil.manipulateArray(content.data.chapters, {
-			limit: content.sourceConfig.count ?? 1,
-			order: { property: "no", type: content.sourceConfig?.order ?? "desc" }
-		})
+		content.data.chapters = this.applySourceConfigDataManipulation(content.data.chapters, content.sourceConfig)
 
 		const documents: DocumentModel[] = await Promise.all(
 			content.data.chapters.map(async mangaChapter => (
@@ -65,6 +63,16 @@ class MangaConverterTool implements ConverterContract<Manga> {
 		const mobiFilePath = await this.ebookGeneratorService.generateMOBIFromCBZ(cbzFilePath)
 
 		return mobiFilePath
+	}
+
+	private applySourceConfigDataManipulation (data: Manga["chapters"], sourceConfig: SourceConfig): Manga["chapters"] {
+		return DataManipulationUtil.manipulateArray(data, {
+			order: {
+				property: "no",
+				type: sourceConfig?.order ?? "desc"
+			},
+			limit: sourceConfig.count ?? 1
+		})
 	}
 }
 

@@ -22,20 +22,22 @@ class EbookGeneratorService {
 		return filePath
 	}
 
-	async generateMOBIFromEPUB (epubFilePath: string): Promise<string> {
+	async generateMOBIFromEPUB (epubFilePath: string, customOptions?: EbookConvertOptions): Promise<string> {
 		const mobiFilePath = SanitizationUtil.sanitizeFilename(`${epubFilePath}.mobi`)
 
 		await ProcessCommandService.run("ebook-convert", [epubFilePath, mobiFilePath], {
+			...(customOptions || {}),
 			...this.defaultEbookConvertOptions
 		})
 
 		return mobiFilePath
 	}
 
-	async generateMOBIFromCBZ (cbzFilePath: string): Promise<string> {
+	async generateMOBIFromCBZ (cbzFilePath: string, customOptions?: EbookConvertOptions): Promise<string> {
 		const mobiFilePath = SanitizationUtil.sanitizeFilename(`${cbzFilePath}.mobi`)
 
 		const options: EbookConvertOptions = {
+			...(customOptions || {}),
 			noInlineToc: true,
 			outputProfile: "tablet",
 			right2left: false,
