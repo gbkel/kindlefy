@@ -1,7 +1,7 @@
 import { SourceConfig } from "@/Protocols/SetupInputProtocol"
 import { ParsedRSSItem } from "@/Protocols/ParserProtocol"
 
-export type ContentType = "medium" | "quastor"
+export type ContentType = "medium"
 
 export type ContentTypeValidator = (SourceConfig: SourceConfig) => boolean
 

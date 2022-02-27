@@ -27,8 +27,7 @@ class RSSContentEnricherService {
 		let contentType: ContentType
 
 		const contentTypeValidatorMap: Record<ContentType, ContentTypeValidator> = {
-			medium: (sourceConfig) => SourceValidation.isMediumRSSSource(sourceConfig),
-			quastor: (sourceConfig) => SourceValidation.isQuastorRSSSource(sourceConfig)
+			medium: (sourceConfig) => SourceValidation.isMediumRSSSource(sourceConfig)
 		}
 
 		Object.entries(contentTypeValidatorMap).forEach(([validatorContentType, validator]) => {
@@ -45,8 +44,7 @@ class RSSContentEnricherService {
 	private getEnricherByContentType (contentType: ContentType): ContentEnricher {
 		const contentEnricherMap: Record<ContentType | "default", ContentEnricher> = {
 			medium: async (parsedRSSItem) => await this.enrichMediumContent(parsedRSSItem),
-			quastor: async (parsedRSSItem) => await this.enrichQuastorContent(parsedRSSItem),
-			default: async (parsedRSSItem) => await Promise.resolve(parsedRSSItem.content)
+			default: async (parsedRSSItem) => await this.enrichDefaultContent(parsedRSSItem)
 		}
 
 		return contentEnricherMap[contentType] || contentEnricherMap.default
@@ -74,9 +72,10 @@ class RSSContentEnricherService {
 	}
 
 	/**
-	 * Quastor RSS usually saves all the post data in a field called "content:encoded".
+	 * Most of the RSS feeds put full content inside a property called "content:encoded", instead
+	 * of using the "content" property.
 	 */
-	private async enrichQuastorContent (parsedRSSItem: ParsedRSSItem): Promise<string> {
+	private async enrichDefaultContent (parsedRSSItem: ParsedRSSItem): Promise<string> {
 		const fullPostContent = parsedRSSItem.rawData["content:encoded"] as string
 		const shortPostContent = parsedRSSItem.content
 

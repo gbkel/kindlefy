@@ -5,10 +5,6 @@ class SourceValidation {
 		return this.isSpecificRSSSource("medium.com", sourceConfig)
 	}
 
-	isQuastorRSSSource (sourceConfig: SourceConfig): boolean {
-		return this.isSpecificRSSSource("quastor.org", sourceConfig)
-	}
-
 	private isSpecificRSSSource (matchUrl: string, sourceConfig: SourceConfig): boolean {
 		const {
 			type,
