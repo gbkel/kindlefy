@@ -1,4 +1,4 @@
-name: Check Kindlefy
+name: Kindlefy (CI)
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Check Kindlefy
+    name: Kindlefy CI
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
