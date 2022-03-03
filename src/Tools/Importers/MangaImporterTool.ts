@@ -15,7 +15,7 @@ class MangaImporterTool implements ImporterContract<Manga> {
 
 	constructor () {
 		this.httpService = new HttpService({
-			baseURL: "http://w13.mangafreak.net"
+			baseURL: "https://mangafreak.net"
 		})
 	}
 
