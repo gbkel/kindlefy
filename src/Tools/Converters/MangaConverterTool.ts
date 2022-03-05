@@ -9,7 +9,6 @@ import { SourceConfig } from "@/Protocols/SetupInputProtocol"
 
 import TempFolderService from "@/Services/TempFolderService"
 import QueueService from "@/Services/QueueService"
-import HttpService from "@/Services/HttpService"
 import EbookGeneratorService from "@/Services/EbookGeneratorService"
 
 import FileUtil from "@/Utils/FileUtil"
@@ -17,7 +16,6 @@ import DataManipulationUtil from "@/Utils/DataManipulationUtil"
 
 class MangaConverterTool implements ConverterContract<Manga> {
 	private readonly queueService = new QueueService({ concurrency: 5, retries: 3, retryDelay: 10000 })
-	private readonly httpService = new HttpService({})
 	private readonly ebookGeneratorService = new EbookGeneratorService()
 
 	async convert (content: Content<Manga>): Promise<DocumentModel[]> {
@@ -28,7 +26,9 @@ class MangaConverterTool implements ConverterContract<Manga> {
 				await this.queueService.enqueue(async () => {
 					const fullChapterName = `${content.data.title} - ${mangaChapter.title}`
 
-					const cbzFilePath = await this.URLToCBZ(mangaChapter.pagesFileUrl, fullChapterName)
+					const pagesFile = await mangaChapter.getPagesFile()
+
+					const cbzFilePath = await this.pagesFileToCBZ(pagesFile, fullChapterName)
 					const mobiFilePath = await this.CBZToMOBI(cbzFilePath)
 
 					const mobiData = fs.createReadStream(mobiFilePath)
@@ -48,13 +48,11 @@ class MangaConverterTool implements ConverterContract<Manga> {
 		return documents
 	}
 
-	private async URLToCBZ (url: string, title: string): Promise<string> {
-		const buffer = await this.httpService.toBuffer(url)
-
+	private async pagesFileToCBZ (pageFile: Buffer, title: string): Promise<string> {
 		const cbzFileName = `${title}.cbz`
 		const cbzFilePath = TempFolderService.mountTempPath(cbzFileName)
 
-		await fs.promises.writeFile(cbzFilePath, buffer)
+		await fs.promises.writeFile(cbzFilePath, pageFile)
 
 		return cbzFilePath
 	}

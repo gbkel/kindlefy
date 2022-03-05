@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from "axios"
+import { Readable } from "stream"
 
 import { HttpOptions } from "@/Protocols/HttpProtocol"
 
@@ -31,6 +32,24 @@ class HttpService {
 		})
 
 		return result.data
+	}
+
+	async toReadStream (url: string): Promise<Readable> {
+		const result = await this.client.get(url, {
+			responseType: "stream"
+		})
+
+		return result.data
+	}
+
+	async exists (url: string): Promise<boolean> {
+		try {
+			await this.client.head(url)
+
+			return true
+		} catch {
+			return false
+		}
 	}
 }
 

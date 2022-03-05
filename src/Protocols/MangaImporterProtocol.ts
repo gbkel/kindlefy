@@ -7,7 +7,7 @@ export type MangaChapterSearchResult = {
 	no: number
 	title: string
 	createdAt: string
-	pagesFileUrl: string
+	getPagesFile: () => Promise<Buffer>
 }
 
 export type Manga = {
