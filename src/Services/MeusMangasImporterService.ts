@@ -40,9 +40,7 @@ class MeusMangasImporterService {
 	}
 
 	private async searchManga (name: string): Promise<MangaSearchResult> {
-		const json = await this.httpService.toJSON<Record<string, MeusMangasSearchResult>>(
-			`https://meusmangas.net/wp-json/site/search/?keyword=${name}&nonce=e154db27c2`
-		)
+		const json = await this.httpService.toJSON<Record<string, MeusMangasSearchResult>>(`wp-json/site/search/?keyword=${name}&nonce=e154db27c2`)
 
 		const [manga] = Object.values(json)
 
