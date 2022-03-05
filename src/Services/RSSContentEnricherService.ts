@@ -6,11 +6,10 @@ import {
 } from "@/Protocols/RSSContentEnricherProtocol"
 import { ParsedRSSItem } from "@/Protocols/ParserProtocol"
 
-import MediumExporterUtil from "@/Utils/MediumExporterUtil"
+import MediumImporterService from "@/Services/MediumImporterService"
+import ErrorHandlerService from "@/Services/ErrorHandlerService"
 
 import SourceValidation from "@/Validations/SourceValidation"
-
-import ErrorHandlerService from "@/Services/ErrorHandlerService"
 
 class RSSContentEnricherService {
 	async enrich (sourceConfig: SourceConfig, parsedRSSItem: ParsedRSSItem): Promise<string> {
@@ -58,11 +57,11 @@ class RSSContentEnricherService {
 	private async enrichMediumContent (parsedRSSItem: ParsedRSSItem): Promise<string> {
 		let content = parsedRSSItem.content
 
-		const contentUrl = MediumExporterUtil.getPostUrlFromSeeMoreContent(parsedRSSItem.content)
+		const contentUrl = MediumImporterService.getPostUrlFromSeeMoreContent(parsedRSSItem.content)
 
 		if (contentUrl) {
 			try {
-				content = await MediumExporterUtil.getPostHTML(contentUrl)
+				content = await MediumImporterService.getPostHTML(contentUrl)
 			} catch (error) {
 				ErrorHandlerService.handle(error)
 			}

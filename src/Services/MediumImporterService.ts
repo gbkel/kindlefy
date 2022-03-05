@@ -15,7 +15,7 @@ import {
  * Credits to:
  * 	- https://github.com/iagocavalcante/api-postagens
  */
-class MediumExporterUtil {
+class MediumImporterService {
 	private readonly httpService: HttpService = new HttpService({})
 
 	private readonly tagReplaceMap = {
@@ -184,4 +184,4 @@ class MediumExporterUtil {
 	}
 }
 
-export default new MediumExporterUtil()
+export default new MediumImporterService()
