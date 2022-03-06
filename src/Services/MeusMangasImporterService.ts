@@ -40,8 +40,9 @@ class MeusMangasImporterService {
 	}
 
 	private async searchManga (name: string): Promise<MangaSearchResult> {
+		console.log("\n\nSearching manga..\n\n")
 		const json = await this.httpService.toJSON<Record<string, MeusMangasSearchResult>>(`wp-json/site/search/?keyword=${name}&nonce=e154db27c2`)
-
+		console.log("\n\Found manga..\n\n", json)
 		const [manga] = Object.values(json)
 
 		const mangaPath = manga.url.replace(this.websiteBaseURL, "")
@@ -53,7 +54,9 @@ class MeusMangasImporterService {
 	}
 
 	private async searchMangaChapters (mangaPath: string): Promise<MangaChapterSearchResult[]> {
+		console.log("\n\nSearching manga chapters..\n\n")
 		const rawChapters = await this.getRawChaptersByMangaPath(mangaPath)
+		console.log("\n\Found manga chapters..\n\n", rawChapters)
 
 		const mangaSlug = mangaPath.split("/").pop()
 
