@@ -1,21 +1,14 @@
 import axios, { AxiosInstance } from "axios"
 import { Readable } from "stream"
-import fetch from "node-fetch"
 
 import { HttpOptions } from "@/Protocols/HttpProtocol"
 
 class HttpService {
 	private readonly client: AxiosInstance
-	private readonly baseURL: string
 
 	constructor (options: HttpOptions) {
-		this.baseURL = options.baseURL
-
 		this.client = axios.create({
-			baseURL: options.baseURL,
-			headers: {
-				"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
-			}
+			baseURL: options.baseURL
 		})
 	}
 
@@ -34,11 +27,11 @@ class HttpService {
 	}
 
 	async toJSON<Result extends Record<string, unknown>>(url: string): Promise<Result> {
-		const result = await fetch(this.buildFullURL(url), {
-			method: "get"
+		const result = await this.client.get(url, {
+			responseType: "json"
 		})
 
-		return result.json()
+		return result.data
 	}
 
 	async toReadStream (url: string): Promise<Readable> {
@@ -56,14 +49,6 @@ class HttpService {
 			return true
 		} catch {
 			return false
-		}
-	}
-
-	private buildFullURL (url: string): string {
-		if (this.baseURL) {
-			return `${this.baseURL}/${url}`
-		} else {
-			return url
 		}
 	}
 }
