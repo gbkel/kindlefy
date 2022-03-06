@@ -25,7 +25,7 @@ class NotificationService {
 				try {
 					return await callbackFn(taskConfig)
 				} catch (error) {
-					taskConfig.setError(error)
+					taskConfig.setError(error.message || error)
 				}
 			})
 
@@ -48,7 +48,7 @@ class NotificationService {
 				try {
 					return await callbackFn(taskConfig)
 				} catch (error) {
-					taskConfig.setError(error)
+					taskConfig.setError(error.message || error)
 				}
 			})
 
