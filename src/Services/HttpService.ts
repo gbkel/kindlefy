@@ -3,10 +3,15 @@ import { Readable } from "stream"
 
 import { HttpOptions } from "@/Protocols/HttpProtocol"
 
+import HttpProxyService from "@/Services/HttpProxyService"
+
 class HttpService {
 	private readonly client: AxiosInstance
+	private readonly options: HttpOptions
 
 	constructor (options: HttpOptions) {
+		this.options = options
+
 		this.client = axios.create({
 			baseURL: options.baseURL
 		})
@@ -21,17 +26,33 @@ class HttpService {
 	}
 
 	async toString (url: string): Promise<string> {
-		const result = await this.client.get(url)
+		let data: string
 
-		return result.data
+		if (this.options.withProxy) {
+			data = await this.withProxy(url)
+		} else {
+			const result = await this.client.get(url)
+
+			data = result.data
+		}
+
+		return data
 	}
 
 	async toJSON<Result extends Record<string, unknown>>(url: string): Promise<Result> {
-		const result = await this.client.get(url, {
-			responseType: "json"
-		})
+		let data: Result
 
-		return result.data
+		if (this.options) {
+			const stringData = await this.withProxy(url)
+
+			data = JSON.parse(stringData)
+		} else {
+			const result = await this.client.get(url, { responseType: "json" })
+
+			data = result.data
+		}
+
+		return data
 	}
 
 	async toReadStream (url: string): Promise<Readable> {
@@ -50,6 +71,12 @@ class HttpService {
 		} catch {
 			return false
 		}
+	}
+
+	private async withProxy (url: string): Promise<string> {
+		const formattedURL = new URL(url, this.options.baseURL)
+
+		return await HttpProxyService.get(formattedURL.href)
 	}
 }
 

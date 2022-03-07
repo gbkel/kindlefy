@@ -1,19 +1,21 @@
 import {
 	MangaSearchResult,
 	MangaChapterSearchResult,
-	Manga
+	Manga,
+	MangaImporterContract
 } from "@/Protocols/MangaImporterProtocol"
 
 import HttpService from "@/Services/HttpService"
 import ParserService from "@/Services/ParserService"
 
-class MangaFreakImporterService {
+class MangaFreakImporterService implements MangaImporterContract {
 	private readonly httpService: HttpService
 	private readonly parserService = new ParserService()
 
 	constructor () {
 		this.httpService = new HttpService({
-			baseURL: "https://mangafreak.net"
+			baseURL: "https://mangafreak.net",
+			withProxy: true
 		})
 	}
 

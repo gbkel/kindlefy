@@ -3,7 +3,8 @@ import fs from "fs"
 import {
 	MangaSearchResult,
 	MangaChapterSearchResult,
-	Manga
+	Manga,
+	MangaImporterContract
 } from "@/Protocols/MangaImporterProtocol"
 import { MeusMangasSearchResult, RawChapter, RawChapterPicture } from "@/Protocols/MeusMangasProtocol"
 
@@ -18,14 +19,17 @@ import MapUtil from "@/Utils/MapUtil"
 import FileUtil from "@/Utils/FileUtil"
 import SanitizationUtil from "@/Utils/SanitizationUtil"
 
-class MeusMangasImporterService {
+class MeusMangasImporterService implements MangaImporterContract {
 	private readonly httpService: HttpService
 	private readonly parserService = new ParserService()
 	private readonly queueService = new QueueService({ concurrency: 7 })
 	private readonly websiteBaseURL = "https://meusmangas.net"
 
 	constructor () {
-		this.httpService = new HttpService({ baseURL: this.websiteBaseURL })
+		this.httpService = new HttpService({
+			baseURL: this.websiteBaseURL,
+			withProxy: true
+		})
 	}
 
 	async getManga (name: string): Promise<Manga> {
