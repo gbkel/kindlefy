@@ -9,7 +9,6 @@ import {
 import { MeusMangasSearchResult, RawChapter, RawChapterPicture } from "@/Protocols/MeusMangasProtocol"
 
 import HttpService from "@/Services/HttpService"
-import ParserService from "@/Services/ParserService"
 import CrawlerService from "@/Services/CrawlerService"
 import QueueService from "@/Services/QueueService"
 import CompressionService from "@/Services/CompressionService"
@@ -21,7 +20,6 @@ import SanitizationUtil from "@/Utils/SanitizationUtil"
 
 class MeusMangasImporterService implements MangaImporterContract {
 	private readonly httpService: HttpService
-	private readonly parserService = new ParserService()
 	private readonly queueService = new QueueService({ concurrency: 7 })
 	private readonly websiteBaseURL = "https://meusmangas.net"
 
@@ -109,9 +107,10 @@ class MeusMangasImporterService implements MangaImporterContract {
 	private async getRawChaptersByMangaPath (mangaPath: string): Promise<RawChapter[]> {
 		const html = await this.httpService.toString(mangaPath)
 
-		const $ = this.parserService.parseHTML(html)
-
-		const [lastChaptersPageElement] = $("#chapter-list > ul > li:nth-child(9)").toArray()
+		const [lastChaptersPageElement] = CrawlerService.findElements({
+			html,
+			selector: "#chapter-list > ul > li:nth-child(9)"
+		})
 
 		const lastChaptersPage = Number((lastChaptersPageElement?.children?.[0] as any)?.children?.[0]?.data)
 
@@ -123,16 +122,17 @@ class MeusMangasImporterService implements MangaImporterContract {
 
 				const html = await this.httpService.toString(`${mangaPath}/page/${page}`)
 
-				const $ = this.parserService.parseHTML(html)
-
-				const chapterListElements = $("#chapter-list > div.list-load > ul > li > a").toArray()
+				const chapterListElements = CrawlerService.findElements({
+					html,
+					selector: "#chapter-list > div.list-load > ul > li > a"
+				})
 
 				chapterListElements.map(chapterListElement => {
 					const chapterTitleElement = CrawlerService.getElementByClassName(chapterListElement, "cap-text")
 					const chapterDateElement = CrawlerService.getElementByClassName(chapterListElement, "chapter-date")
 
-					const chapterNumber = parseInt((chapterTitleElement.lastChild as any).data)
-					const chapterDate = (chapterDateElement.lastChild as any).data
+					const chapterNumber = parseInt(chapterTitleElement.lastChild.data)
+					const chapterDate = chapterDateElement.lastChild.data
 
 					const chapterUrl = chapterListElement.attribs.href
 					const chapterPath = chapterUrl.replace(this.websiteBaseURL, "")

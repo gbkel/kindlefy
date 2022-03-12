@@ -1,5 +1,4 @@
 import RSSParser from "rss-parser"
-import cheerio, { CheerioAPI } from "cheerio"
 
 import { ParsedRSS } from "@/Protocols/ParserProtocol"
 
@@ -24,12 +23,6 @@ class ParserService {
 		}
 
 		return parsedRSS
-	}
-
-	parseHTML (html: string): CheerioAPI {
-		const $ = cheerio.load(html)
-
-		return $
 	}
 }
 

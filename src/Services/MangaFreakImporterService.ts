@@ -6,11 +6,10 @@ import {
 } from "@/Protocols/MangaImporterProtocol"
 
 import HttpService from "@/Services/HttpService"
-import ParserService from "@/Services/ParserService"
+import CrawlerService from "@/Services/CrawlerService"
 
 class MangaFreakImporterService implements MangaImporterContract {
 	private readonly httpService: HttpService
-	private readonly parserService = new ParserService()
 
 	constructor () {
 		this.httpService = new HttpService({
@@ -33,16 +32,17 @@ class MangaFreakImporterService implements MangaImporterContract {
 	private async searchManga (name: string): Promise<MangaSearchResult> {
 		const html = await this.httpService.toString(`/Search/${name}`)
 
-		const $ = this.parserService.parseHTML(html)
-
-		const links = $("a").toArray()
+		const links = CrawlerService.findElements({
+			html,
+			selector: "a"
+		})
 
 		const mangaList: MangaSearchResult[] = links
 			.filter(link => link?.attribs?.href?.startsWith("/Manga/"))
 			.filter(link => link?.children?.[0]?.type === "text")
 			.map(link => ({
 				path: link.attribs.href,
-				title: (link?.children?.[0] as any)?.data
+				title: link?.children?.[0]?.data
 			}))
 
 		const [mostProbablyManga] = mangaList
@@ -55,15 +55,16 @@ class MangaFreakImporterService implements MangaImporterContract {
 
 		const html = await this.httpService.toString(mangaPath)
 
-		const $ = this.parserService.parseHTML(html)
-
-		const rows = $("tbody > *").toArray()
+		const rows = CrawlerService.findElements({
+			html,
+			selector: "tbody > *"
+		})
 
 		const chapters: MangaChapterSearchResult[] = rows.map((row, index) => {
-			const subRows = row.children.filter(child => (child as any).name === "td")
+			const subRows = row.children.filter(child => child.name === "td")
 
-			const title = (subRows?.[0] as any)?.children?.[0]?.children?.[0]?.data as string
-			const createdAt = (subRows?.[1] as any)?.children?.[0]?.data as string
+			const title = subRows?.[0]?.children?.[0]?.children?.[0]?.data
+			const createdAt = subRows?.[1]?.children?.[0]?.data
 
 			const chapterNumber = +title.match(/Chapter.\w+/g)[0]?.replace(/\D/g, "")
 

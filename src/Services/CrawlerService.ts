@@ -1,4 +1,9 @@
-import { Element } from "cheerio"
+import cheerio from "cheerio"
+
+import {
+	FindElementsInput,
+	Element
+} from "@/Protocols/CrawlerProtocol"
 
 class CrawlerService {
 	getElementByClassName (currentElement: Element, selectedClass: string): Element {
@@ -14,7 +19,7 @@ class CrawlerService {
 			const children = currentElement?.children || []
 
 			children.forEach((child) => {
-				const childSelectedElement = this.getElementByClassName(child as Element, selectedClass)
+				const childSelectedElement = this.getElementByClassName(child, selectedClass)
 
 				if (childSelectedElement) {
 					selectedElement = childSelectedElement
@@ -23,6 +28,16 @@ class CrawlerService {
 		}
 
 		return selectedElement
+	}
+
+	findElements (input: FindElementsInput): Element[] {
+		const { html, selector } = input
+
+		const $ = cheerio.load(html)
+
+		const elements = $(selector).toArray() as any
+
+		return elements
 	}
 }
 
