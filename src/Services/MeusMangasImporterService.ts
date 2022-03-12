@@ -73,14 +73,14 @@ class MeusMangasImporterService implements MangaImporterContract {
 				getPagesFile: async () => {
 					const rawChapterPictures = await this.getRawChapterPictures(mangaSlug, no)
 
-					const zip = CompressionService.zip
+					const compressionService = new CompressionService()
 
 					const pagesFileName = SanitizationUtil.sanitizeFilename(`${mangaSlug}-${no}.zip`)
 					const pagesFilePath = TempFolderService.mountTempPath(pagesFileName)
 
 					const pagesFileStream = fs.createWriteStream(pagesFilePath)
 
-					zip.pipe(pagesFileStream)
+					compressionService.pipe(pagesFileStream)
 
 					const httpService = new HttpService({})
 
@@ -90,11 +90,11 @@ class MeusMangasImporterService implements MangaImporterContract {
 
 							const { filename } = FileUtil.parseFilePath(rawChapterPicture.url)
 
-							zip.append(rawChapterPictureReadStream, { name: filename })
+							compressionService.addFile({ data: rawChapterPictureReadStream, fileName: filename })
 						})
 					)
 
-					await zip.finalize()
+					await compressionService.compress()
 
 					const pagesFile = await fs.promises.readFile(pagesFilePath)
 
