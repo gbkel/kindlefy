@@ -6,7 +6,9 @@ class TempFolderService {
 		return path.resolve(__dirname, "..", "..", "tmp")
 	}
 
-	mountTempPath (filename: string): string {
+	async mountTempPath (filename: string): Promise<string> {
+		await this.generate()
+
 		return path.resolve(this.path, filename)
 	}
 

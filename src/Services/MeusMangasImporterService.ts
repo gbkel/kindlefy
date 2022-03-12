@@ -74,7 +74,7 @@ class MeusMangasImporterService implements MangaImporterContract {
 					const compressionService = new CompressionService()
 
 					const pagesFileName = SanitizationUtil.sanitizeFilename(`${mangaSlug}-${no}.zip`)
-					const pagesFilePath = TempFolderService.mountTempPath(pagesFileName)
+					const pagesFilePath = await TempFolderService.mountTempPath(pagesFileName)
 
 					const pagesFileStream = fs.createWriteStream(pagesFilePath)
 

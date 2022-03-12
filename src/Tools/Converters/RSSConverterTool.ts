@@ -95,7 +95,7 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 
 	private async EPUBConfigToEPUB (EPUBConfig: GenerateEPUBOptions): Promise<string> {
 		const epubFileName = `${EPUBConfig.title}.epub`
-		const epubFilePath = TempFolderService.mountTempPath(epubFileName)
+		const epubFilePath = await TempFolderService.mountTempPath(epubFileName)
 
 		await this.ebookGeneratorService.generateEPUB(epubFilePath, EPUBConfig)
 

@@ -24,10 +24,8 @@ const generateMockData = (count: number): Record<string, MockData> => {
 }
 
 const makeJSONDatabaseService = async (): Promise<JSONDatabaseService<MockData>> => {
-	await TempFolderService.generate()
-
 	const databaseName = `json-database-service-integration-test-${crypto.randomUUID()}.json`
-	const databaseFullPath = TempFolderService.mountTempPath(databaseName)
+	const databaseFullPath = await TempFolderService.mountTempPath(databaseName)
 
 	const jsonDatabaseService = new JSONDatabaseService<MockData>(databaseFullPath)
 
