@@ -42,7 +42,7 @@ class HttpService {
 	async toJSON<Result extends Record<string, unknown>>(url: string): Promise<Result> {
 		let data: Result
 
-		if (this.options) {
+		if (this.options.withProxy) {
 			const stringData = await this.withProxy(url)
 
 			data = JSON.parse(stringData)
