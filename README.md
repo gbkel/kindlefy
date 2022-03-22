@@ -55,11 +55,20 @@ jobs:
 
 We recommend you to create a new email to use as a sender since some services need to disable extra auth in other to be able to send emails by smtp.
 
-For now we have the current senders available:
+**Core Options**
+
+- ```type``` *- gmail, outlook, smtp -* Type of sender to use.
+- ```email``` *- String -* Sender email to use to send the documents to kindle.
+
 
 **Gmail**
 
 In order to use Gmail, you need to [Disable Unlock Captcha](https://accounts.google.com/DisplayUnlockCaptcha), Disable Two Factor Auth, [Enable Less Secure Apps Access](https://myaccount.google.com/lesssecureapps).
+
+- ```email``` *- String -* The email you use to login in gmail.
+- ```password``` *- String -* The password you use to login in gmail.
+
+Example:
 
 ```json
 {
@@ -71,6 +80,11 @@ In order to use Gmail, you need to [Disable Unlock Captcha](https://accounts.goo
 
 **Outlook**
 
+- ```email``` *- String -* The email you use to login in outlook.
+- ```password``` *- String -* The password you use to login in outlook.
+
+Example:
+
 ```json
 {
 	"type": "outlook",
@@ -80,6 +94,13 @@ In order to use Gmail, you need to [Disable Unlock Captcha](https://accounts.goo
 ```
 
 **SMTP**
+
+- ```host``` *- String -* Server host.
+- ```user``` *- String -* Server user.
+- ```password``` *- String -* Server user's password.
+- ```port``` *- String -* Server port.
+
+Example:
 
 ```json
 {
@@ -94,27 +115,30 @@ In order to use Gmail, you need to [Disable Unlock Captcha](https://accounts.goo
 
 ### Source
 
-All the sources has some basic options to customize it during import. You are able to see these options below:
+All the sources has some options to customize it during import. The contents usually come in descending creation order. You are able to see these options below:
 
-```json
-{
-	// Documents order. This value can be "desc" or "asc".
-	"order": "desc",
-	// Amount of documents to be sync.
-	"count": 1
-}
-```
+**Core Options**
 
-For now we have the following sources available to import contents to kindle *(the contents usually come in descending creation order)*:
+These are the options used by all the existing sources.
+
+- ```order``` *- asc, desc -* Documents ordination.
+- ```count``` *- Number -* Amount of documents to sync.
+- ```type``` *- manga, rss -* Type of source to sync.
 
 **Manga**
 
 The manga source by default sets ```count: 1``` and ```order: desc``` to retrieve the last most recent chapter.
 
+- ```name``` *- String -* Manga name to search for.
+
+Example:
+
+- Sync the last One Piece manga chapter:
+
 ```json
 {
 	"type": "manga",
-	"name": "some manga name"
+	"name": "One Piece"
 }
 ```
 
@@ -122,22 +146,38 @@ The manga source by default sets ```count: 1``` and ```order: desc``` to retriev
 
 The RSS source by default sets ```order: desc``` and ```splitRSSPosts: false``` to return all posts in publish date descending order.
 
+- ```url``` *- String -* RSS feed link.
+- ```splitRSSPosts``` *- Boolean -* Set to true if you want every post to be a new document inside your kindle.
+
+Example:
+
+- Sync all the last dev.to feed posts in the same document:
+
 ```json
 {
 	"type": "rss",
-	"url": "url",
-	// Set to true if you want every post to be a new document inside your kindle.
+	"url": "https://dev.to/feed",
 	"splitRSSPosts": false
 }
 ```
 
 ### Storage
 
-In case you want to avoid duplicated sync, you can use a storage to save sync history. After adding a storage config, you need to set the 'no_duplicated_sync' environment variable to true in order to use it. Currently we have the following storages:
+In case you want to avoid duplicated sync, you can use a storage to save sync history. After adding a storage config, you need to set the 'no_duplicated_sync' environment variable to true in order to use it.
+
+**Core Options**
+
+- ```type``` *- local -* Type of storage to use.
 
 **Local**
 
 It saves the sync history inside the repository this action is currently running on. You need to give Kindlefy a github access token in order to edit the repository, usually when we are using a Github Action, it automatically sets up a variable called 'GITHUB_TOKEN' on the build context that can be used as shown in the .yml example in the start of the readme.
+
+- ```githubAccessToken``` *- String -* Github access token to give the Github Action write/read access to the repository it is running in.
+
+Example:
+
+- Using Github repository to save sync history:
 
 ```json
 {
