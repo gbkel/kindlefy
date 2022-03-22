@@ -119,8 +119,6 @@ All the sources has some options to customize it during import. The contents usu
 
 **Core Options**
 
-These are the options used by all the existing sources.
-
 - ```order``` *- asc, desc -* Documents ordination.
 - ```count``` *- Number -* Amount of documents to sync.
 - ```type``` *- manga, rss -* Type of source to sync.
