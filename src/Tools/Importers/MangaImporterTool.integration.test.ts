@@ -14,7 +14,7 @@ describe("MangaImporterTool", () => {
 			))
 
 			expect(manga.data.title).toEqual("One Piece")
-			expect(manga.data.chapters.length).toBe(lastChapterNumeration - firstChapterNumeration)
+			expect(manga.data.chapters.length).toBeGreaterThanOrEqual(lastChapterNumeration - firstChapterNumeration)
 			expect(areAllMangaChaptersValid).toBeTruthy()
 		})
 	})
