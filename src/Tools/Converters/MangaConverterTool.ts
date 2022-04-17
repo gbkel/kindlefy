@@ -13,6 +13,7 @@ import EbookGeneratorService from "@/Services/EbookGeneratorService"
 
 import FileUtil from "@/Utils/FileUtil"
 import DataManipulationUtil from "@/Utils/DataManipulationUtil"
+import SanitizationUtil from "@/Utils/SanitizationUtil"
 
 class MangaConverterTool implements ConverterContract<Manga> {
 	private readonly queueService = new QueueService({ concurrency: 5, retries: 3, retryDelay: 10000 })
@@ -49,7 +50,8 @@ class MangaConverterTool implements ConverterContract<Manga> {
 	}
 
 	private async pagesFileToCBZ (pageFile: Buffer, title: string): Promise<string> {
-		const cbzFileName = `${title}.cbz`
+		const cbzFileName = SanitizationUtil.sanitizeFilename(`${title}.cbz`)
+
 		const cbzFilePath = await TempFolderService.mountTempPath(cbzFileName)
 
 		await fs.promises.writeFile(cbzFilePath, pageFile)

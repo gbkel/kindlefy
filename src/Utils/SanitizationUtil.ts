@@ -1,6 +1,17 @@
+import slugify from "slugify"
+
 class SanitizationUtil {
-	sanitizeFilename (rawFilename: string): string {
-		return rawFilename.replace(/[^a-zA-Z0-9 \.]/g, "")
+	sanitizeFilename (filename: string): string {
+		const params = filename.split(".")
+
+		const extension = params.pop()
+
+		const rawFilename = params.join(" ")
+		const sanitizedFilename = slugify(rawFilename)
+
+		const	result = `${sanitizedFilename}.${extension}`
+
+		return result
 	}
 }
 

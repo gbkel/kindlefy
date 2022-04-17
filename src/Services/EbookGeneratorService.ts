@@ -7,8 +7,6 @@ import {
 
 import ProcessCommandService from "@/Services/ProcessCommandService"
 
-import SanitizationUtil from "@/Utils/SanitizationUtil"
-
 class EbookGeneratorService {
 	private readonly defaultEbookConvertOptions: EbookConvertOptions = {
 		authors: "Kindlefy"
@@ -23,7 +21,7 @@ class EbookGeneratorService {
 	}
 
 	async generateMOBIFromEPUB (epubFilePath: string, customOptions?: EbookConvertOptions): Promise<string> {
-		const mobiFilePath = SanitizationUtil.sanitizeFilename(`${epubFilePath}.mobi`)
+		const mobiFilePath = `${epubFilePath}.mobi`
 
 		await ProcessCommandService.run("ebook-convert", [epubFilePath, mobiFilePath], {
 			...(customOptions || {}),
@@ -34,7 +32,7 @@ class EbookGeneratorService {
 	}
 
 	async generateMOBIFromCBZ (cbzFilePath: string, customOptions?: EbookConvertOptions): Promise<string> {
-		const mobiFilePath = SanitizationUtil.sanitizeFilename(`${cbzFilePath}.mobi`)
+		const mobiFilePath = `${cbzFilePath}.mobi`
 
 		const options: EbookConvertOptions = {
 			...(customOptions || {}),

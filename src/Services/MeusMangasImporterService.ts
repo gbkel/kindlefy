@@ -160,14 +160,26 @@ class MeusMangasImporterService implements MangaImporterContract {
 		const cdnUrl = "https://img.meusmangas.net"
 		const cdnHttpService = new HttpService({ baseURL: cdnUrl })
 
+		const possiblePictureExtensions = ["jpg", "png"]
+
 		while (!foundAllPictures) {
-			const picturePath = `image/${mangaSlug}/${chapterNo}/${currentChapterPictureOrder}.jpg`
+			const picturePathLookups = await Promise.all(
+				possiblePictureExtensions.map(async pictureExtension => {
+					const picturePath = `image/${mangaSlug}/${chapterNo}/${currentChapterPictureOrder}.${pictureExtension}`
 
-			const pictureExists = await cdnHttpService.exists(picturePath)
+					const pictureExists = await cdnHttpService.exists(picturePath)
 
-			if (pictureExists) {
+					if (pictureExists) {
+						return picturePath
+					}
+				})
+			)
+
+			const validPicturePath = picturePathLookups.find(path => path)
+
+			if (validPicturePath) {
 				rawChapterPictures.push({
-					url: `${cdnUrl}/${picturePath}`,
+					url: `${cdnUrl}/${validPicturePath}`,
 					order: currentChapterPictureOrder
 				})
 

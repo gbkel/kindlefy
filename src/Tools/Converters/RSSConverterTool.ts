@@ -6,6 +6,7 @@ import { ConverterContract } from "@/Protocols/ConverterProtocol"
 import { Content } from "@/Protocols/ImporterProtocol"
 import { GenerateEPUBOptions, EpubContent } from "@/Protocols/EbookGeneratorProtocol"
 import { SourceConfig } from "@/Protocols/SetupInputProtocol"
+import { ParsedRSS } from "@/Protocols/ParserProtocol"
 
 import TempFolderService from "@/Services/TempFolderService"
 import ParserService from "@/Services/ParserService"
@@ -16,7 +17,7 @@ import QueueService from "@/Services/QueueService"
 import FileUtil from "@/Utils/FileUtil"
 import DateUtil from "@/Utils/DateUtil"
 import DataManipulationUtil from "@/Utils/DataManipulationUtil"
-import { ParsedRSS } from "@/Protocols/ParserProtocol"
+import SanitizationUtil from "@/Utils/SanitizationUtil"
 
 class RSSConverterTool implements ConverterContract<Buffer> {
 	private readonly queueService = new QueueService({ concurrency: 10 })
@@ -94,7 +95,7 @@ class RSSConverterTool implements ConverterContract<Buffer> {
 	}
 
 	private async EPUBConfigToEPUB (EPUBConfig: GenerateEPUBOptions): Promise<string> {
-		const epubFileName = `${EPUBConfig.title}.epub`
+		const epubFileName = SanitizationUtil.sanitizeFilename(`${EPUBConfig.title}.epub`)
 		const epubFilePath = await TempFolderService.mountTempPath(epubFileName)
 
 		await this.ebookGeneratorService.generateEPUB(epubFilePath, EPUBConfig)
