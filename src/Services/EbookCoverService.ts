@@ -30,7 +30,9 @@ class EbookCoverService {
 	private async renderHTML (html: string, renderedHtmlPath: string): Promise<string> {
 		return await this.queueService.enqueue(async () => {
 			if (!EbookCoverService.browser) {
-				EbookCoverService.browser = await puppeteer.launch()
+				EbookCoverService.browser = await puppeteer.launch({
+					args: ["--no-sandbox", "--disable-setuid-sandbox"]
+				})
 			}
 
 			const page = await EbookCoverService.browser.newPage()
