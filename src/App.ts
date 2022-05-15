@@ -6,6 +6,7 @@ import ConversionModule from "@/Modules/ConversionModule"
 
 import NotificationService from "@/Services/NotificationService"
 import TempFolderService from "@/Services/TempFolderService"
+import BrowserService from "@/Services/BrowserService"
 
 class App {
 	private readonly setupInputModule = new SetupInputModule()
@@ -22,6 +23,7 @@ class App {
 		})
 
 		await TempFolderService.generate()
+		await BrowserService.start()
 
 		const syncModule = new SyncModule(config.senders, config.kindle)
 		const storeModule = new StoreModule(config.storages, config.sync)
@@ -57,6 +59,7 @@ class App {
 		await storeModule.commitDocumentSyncChanges()
 
 		await TempFolderService.clean()
+		await BrowserService.close()
 	}
 }
 

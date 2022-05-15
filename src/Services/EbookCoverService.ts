@@ -1,14 +1,11 @@
-import puppeteer, { Browser } from "puppeteer"
-
 import { GenerateInput } from "@/Protocols/EbookCoverProtocol"
 
-import QueueService from "@/Services/QueueService"
 import TempFolderService from "@/Services/TempFolderService"
+import BrowserService from "@/Services/BrowserService"
+
 import SanitizationUtil from "@/Utils/SanitizationUtil"
 
 class EbookCoverService {
-	private static browser: Browser
-	private readonly queueService = new QueueService({ concurrency: 1 })
 	private readonly defaultSize = { width: 650, height: 1000 }
 
 	async generate (input: GenerateInput): Promise<string> {
@@ -28,25 +25,17 @@ class EbookCoverService {
 	}
 
 	private async renderHTML (html: string, renderedHtmlPath: string): Promise<string> {
-		return await this.queueService.enqueue(async () => {
-			if (!EbookCoverService.browser) {
-				EbookCoverService.browser = await puppeteer.launch({
-					args: ["--no-sandbox", "--disable-setuid-sandbox"]
-				})
-			}
+		const page = await BrowserService.getPage()
 
-			const page = await EbookCoverService.browser.newPage()
+		await page.setViewport({ width: this.defaultSize.width, height: this.defaultSize.height })
 
-			await page.setViewport({ width: this.defaultSize.width, height: this.defaultSize.height })
+		await page.setContent(html)
 
-			await page.setContent(html)
+		await page.screenshot({ type: "png", path: renderedHtmlPath })
 
-			await page.screenshot({ type: "png", path: renderedHtmlPath })
+		await page.close()
 
-			await page.close()
-
-			return renderedHtmlPath
-		})
+		return renderedHtmlPath
 	}
 
 	private buildCoverHTML (input: GenerateInput): string {
