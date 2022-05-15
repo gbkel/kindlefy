@@ -37,7 +37,8 @@ class MeusMangasImporterService implements MangaImporterContract {
 
 		return {
 			title: manga.title,
-			chapters: mangaChapters
+			chapters: mangaChapters,
+			coverUrl: manga.coverUrl
 		}
 	}
 
@@ -50,7 +51,8 @@ class MeusMangasImporterService implements MangaImporterContract {
 
 		return {
 			title: manga.title,
-			path: mangaPath
+			path: mangaPath,
+			coverUrl: manga.img
 		}
 	}
 

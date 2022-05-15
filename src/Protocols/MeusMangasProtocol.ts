@@ -2,6 +2,7 @@ export type MeusMangasSearchResult = {
 	title: string
 	url: string
 	author: string
+	img: string
 }
 
 export type RawChapterPicture = {

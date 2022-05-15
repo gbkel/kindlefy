@@ -6,8 +6,6 @@ import { SenderContract } from "@/Protocols/SenderProtocol"
 import { SMTPConfig, CustomTransportOptions } from "@/Protocols/SMTPSenderProtocol"
 import { KindleConfig } from "@/Protocols/SetupInputProtocol"
 
-import FileUtil from "@/Utils/FileUtil"
-
 class SMTPSenderTool implements SenderContract {
 	private readonly config: SMTPConfig
 	private readonly mailer: Transporter<SentMessageInfo>
@@ -29,8 +27,6 @@ class SMTPSenderTool implements SenderContract {
 	}
 
 	async sendToKindle (document: DocumentModel, kindleConfig: KindleConfig): Promise<void> {
-		const fileMimetype = FileUtil.getMimetypeByFileName(document.filename)
-
 		await this.mailer.sendMail({
 			from: this.config.email,
 			to: kindleConfig.email,
@@ -40,7 +36,7 @@ class SMTPSenderTool implements SenderContract {
 				{
 					filename: document.filename,
 					content: document.data,
-					contentType: fileMimetype
+					contentType: document.contentType
 				}
 			]
 		})

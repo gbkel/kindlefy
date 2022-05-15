@@ -10,6 +10,10 @@ export type GenerateEPUBOptions = {
 	publisher: string
 	cover: string
 	content: EpubContent[]
+	metadata: {
+		title: string
+		subTitle: string
+	}
 }
 
 /**
@@ -40,4 +44,8 @@ export type EbookConvertOptions = {
 	 * on kindle.
 	 */
 	authors?: string
+	/**
+	 * Indicates a custom cover for ebook by some path or link.
+	 */
+	cover?: string
 }

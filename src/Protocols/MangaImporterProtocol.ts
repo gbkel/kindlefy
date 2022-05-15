@@ -1,6 +1,7 @@
 export type MangaSearchResult = {
 	path: string
 	title: string
+	coverUrl?: string
 }
 
 export type MangaChapterSearchResult = {
@@ -12,6 +13,7 @@ export type MangaChapterSearchResult = {
 
 export type Manga = {
 	title: string
+	coverUrl?: string
 	chapters: MangaChapterSearchResult[]
 }
 
