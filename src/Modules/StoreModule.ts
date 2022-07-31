@@ -38,7 +38,7 @@ class StoreModule {
 			const formattedDocuments: DocumentModelCreationAttributes[] = this.documentsToSync.map(document => ({
 				filename: document.filename,
 				title: document.title,
-				type: document.type
+				contentType: document.contentType
 			}))
 
 			await this.storage.saveDocuments(formattedDocuments)
