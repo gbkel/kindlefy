@@ -27,7 +27,7 @@ export type SourceConfig = {
 	 * Every RSS post will be a new document inside your kindle.
 	 */
 	splitRSSPosts?: boolean
-	type: "rss" | "manga"
+	type: "rss" | "manga" | "recipe"
 }
 
 export type KindleConfig = {

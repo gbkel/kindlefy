@@ -6,18 +6,20 @@ import { ConverterContract } from "@/Protocols/ConverterProtocol"
 
 import RSSConverterTool from "@/Tools/Converters/RSSConverterTool"
 import MangaConverterTool from "@/Tools/Converters/MangaConverterTool"
+import RecipeConverterTool from "@/Tools/Converters/RecipeConverterTool"
 
 class ConversionModule {
-	async convert (content: Content<unknown>): Promise<DocumentModel[]> {
+	async convert(content: Content<unknown>): Promise<DocumentModel[]> {
 		const converter = this.getConverterBySourceConfig(content.sourceConfig)
 
 		return await converter.convert(content)
 	}
 
-	private getConverterBySourceConfig (sourceConfig: SourceConfig): ConverterContract<unknown> {
+	private getConverterBySourceConfig(sourceConfig: SourceConfig): ConverterContract<unknown> {
 		const converterMap: Record<SourceConfig["type"], ConverterContract<unknown>> = {
 			rss: RSSConverterTool,
-			manga: MangaConverterTool
+			manga: MangaConverterTool,
+			recipe: RecipeConverterTool
 		}
 
 		return converterMap[sourceConfig.type]
